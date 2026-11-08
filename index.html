@@ -60,6 +60,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
     <div class="gombok"><button id="nyit">Megnyitás</button><a id="vesz" href="#" target="_blank" rel="noopener">Előfizetés</a></div>
   </div>
   <div id="beall"></div>
+  <div id="kinn" class="lab" style="display:none">Teljes változat · <a href="#" id="torol">kulcs törlése</a></div>
   <div class="lab">Bánky András másik appja: <a id="kal" href="https://bandras1949.github.io/kaleidoszkop/" target="_blank" rel="noopener">Kaleidoszkóp</a><br>Koppintás: hang be/ki · dupla koppintás: új minta</div>
 </div>
 <script src="./mandala.js?v=1"></script>
@@ -97,12 +98,13 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   const mn = new window.Mandala($('cv'), () => ({ want: started, paused: false, P: cur, pats }));
 
   function draw() {   // a panel beállítás-sorai
-    $('zar').style.display = premium ? 'none' : 'block';
+    $('zar').style.display = premium ? 'none' : 'block'; $('kinn').style.display = premium ? 'block' : 'none';
     $('beall').innerHTML = OPT.map(([k, lab, opts]) => `<div class="sor"><div class="cimke">${lab}</div><div class="seg">` +
       opts.map(([v, t]) => `<button data-k="${k}" data-v="${v}" class="${eff()[k] === v ? 'on' : ''}" ${premium ? '' : 'disabled'}>${t}</button>`).join('') + '</div></div>').join('');
   }
   $('beall').addEventListener('click', e => { const b = e.target.closest('button'); if (!b || !premium) return; S[b.dataset.k] = b.dataset.v; store.set('mandala-beallitas', JSON.stringify(S)); cur = P(); draw(); });
   $('vesz').href = BUY;
+  $('torol').onclick = e => { e.preventDefault(); premium = false; try { localStorage.removeItem('mandala-kulcs'); } catch (x) {} $('kulcs').value = ''; cur = P(); draw(); };   // vissza a próbaváltozatba
   $('nyit').onclick = async () => { const k = $('kulcs').value; if (await check(k)) { premium = true; store.set('mandala-kulcs', k.trim()); $('hiba').textContent = ''; cur = P(); draw(); } else $('hiba').textContent = 'Ez a kulcs nem érvényes.'; };
   (async () => { const k = store.get('mandala-kulcs'); if (k && await check(k)) { premium = true; cur = P(); } draw(); })();
 
