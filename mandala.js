@@ -129,7 +129,7 @@
       if (r.ph === 'sweep') { if (r.t >= SWEEP) { r.ph = 'empty'; r.t = 0; this.choose(P, pats); this.t += 20 + Math.random() * 60; r.bg1 = PAIRS[this.cur.pair][1]; } return 0; }
       if (r.ph === 'empty') { if (r.t >= EMPTY) { r.ph = 'build'; r.t = 0; this.grains = []; this.bowl(false); } return 0; }
       if (r.t >= 9 && !r.up) { r.up = true; this.duck(1, 9); }   // a halk jel lecsengése után a zene lassan visszajön
-      if (r.t >= BUILD) { this.rit = null; this.grains = []; this.left = vPer; this.sweepLeft = per; }
+      if (r.t >= BUILD) { this.rit = null; this.grains = []; this.left = vPer; this.sweepLeft = per; if (this.onReborn) try { this.onReborn(); } catch (e) {} }   // jelzés: újjászületett
       return 1;
     }
     freeze() {
