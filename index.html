@@ -130,9 +130,11 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   const aj = $('ajanl');
   mn.onReborn = () => { if (premium) return; aj.classList.add('on'); clearTimeout(aj.t); aj.t = setTimeout(() => aj.classList.remove('on'), 10000); };
   window.__mandalaCsend = () => { if (started && on) { on = false; mn.setWant(false); } };
+  let bc = null; try { bc = new BroadcastChannel('banky-hang'); bc.onmessage = () => { if (started && on) { on = false; mn.setWant(false); } }; } catch (e) {}
+  window.addEventListener('pointerup', () => { try { bc && bc.postMessage(1); } catch (e) {} }, true);
   window.addEventListener('pointerup', tap);
   gomb.addEventListener('pointerup', e => { e.stopPropagation(); panel.classList.toggle('on'); gomb.classList.add('on'); if (!panel.classList.contains('on')) showGomb(); });
-  document.addEventListener('visibilitychange', () => { if (!started) return; if (document.hidden) mn.stop(); else { mn.start(); wake(); } });
+  document.addEventListener('visibilitychange', () => { if (!started) return; if (document.hidden) { mn.stop(); on = false; mn.setWant(false); } else { mn.start(); wake(); } });   // visszatérve csend, koppintásra szól
 })();
 </script>
 <script>
