@@ -129,6 +129,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   // ajánlat minden újjászületés után (csak a próbaváltozatban), kb. 10 mp-ig
   const aj = $('ajanl');
   mn.onReborn = () => { if (premium) return; aj.classList.add('on'); clearTimeout(aj.t); aj.t = setTimeout(() => aj.classList.remove('on'), 10000); };
+  window.__mandalaCsend = () => { if (started && on) { on = false; mn.setWant(false); } };
   window.addEventListener('pointerup', tap);
   gomb.addEventListener('pointerup', e => { e.stopPropagation(); panel.classList.toggle('on'); gomb.classList.add('on'); if (!panel.classList.contains('on')) showGomb(); });
   document.addEventListener('visibilitychange', () => { if (!started) return; if (document.hidden) mn.stop(); else { mn.start(); wake(); } });
@@ -139,6 +140,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 document.addEventListener('click', e => {
   const a = e.target.closest('a[target="_blank"]'); if (!a) return;
   e.preventDefault();
+  if (window.__mandalaCsend) window.__mandalaCsend();   // új lap nyílik: a Mandala elhallgat
   let u = a.href;
   let w = null; try { w = window.open(u, '_blank'); } catch (x) {}
   if (w) { try { w.opener = null; } catch (x) {} } else location.href = u;
