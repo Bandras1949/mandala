@@ -67,7 +67,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   <div id="kinn" class="lab" style="display:none">Teljes változat · <a href="#" id="torol">kulcs törlése</a></div>
   <div class="lab">Bánky András másik appja: <a id="kal" href="https://bandras1949.github.io/kaleidoszkop/" target="_blank" rel="noopener">Kaleidoszkóp</a> · <a href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener">mindkettő együtt</a><br>Koppintás: hang be/ki · dupla koppintás: új minta</div>
 </div>
-<script src="./mandala.js?v=3"></script>
+<script src="./mandala.js?v=4"></script>
 <script>
 (function () {
   // ---------- teljes változat (licenckulcs) ----------
@@ -82,12 +82,12 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   const OPT = [
     ['szín', 'Színpár', [['arany–fekete', 'arany–fekete'], ['arany–éjkék', 'arany–éjkék'], ['ezüst–fekete', 'ezüst–fekete'], ['elefántcsont–bordó', 'elefántcsont–bordó'], ['váltakozó', 'váltakozó']]],
     ['tükör', 'Tükör', [['6', '6'], ['8', '8'], ['12', '12'], ['váltakozó', 'váltakozó']]],
-    ['zene', 'Zene', [['Silent Sanctuary', 'Silent Sanctuary'], ['Handpan', 'Handpan'], ['váltakozó', 'váltakozó'], ['ki', 'csend']]],
+    ['zene', 'Zene', [['Satie', 'Satie'], ['Hárfa', 'Hárfa'], ['Holdkelte', 'Holdkelte'], ['váltakozó', 'váltakozó'], ['ki', 'csend']]],
     ['söprés', 'Homokmandala-söprés', [['be', 'be'], ['ki', 'ki']]],
   ];
   const DEF = { szín: 'váltakozó', tükör: 'váltakozó', zene: 'váltakozó', söprés: 'be' };
   let S = { ...DEF };
-  try { const o = JSON.parse(store.get('mandala-beallitas') || '{}'); for (const k in DEF) if (typeof o[k] === 'string') S[k] = o[k]; } catch (e) {}
+  try { const o = JSON.parse(store.get('mandala-beallitas') || '{}'); for (const k in DEF) if (typeof o[k] === 'string' && OPT.find(x => x[0] === k)[2].some(v => v[0] === o[k])) S[k] = o[k]; } catch (e) {}
   const eff = () => premium ? S : DEF;   // a próbaváltozat az alapbeállításokkal fut
   const P = () => { const s = eff(); return {
     mandalaMinta: 'véletlen', mandalaSzín: s.szín, mandalaTükör: s.tükör, mandalaForgás: 0.6, mandalaLélegzés: true,
