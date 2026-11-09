@@ -134,5 +134,15 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   document.addEventListener('visibilitychange', () => { if (!started) return; if (document.hidden) mn.stop(); else { mn.start(); wake(); } });
 })();
 </script>
+<script>
+// Ha a környezet (pl. beágyazó keret) nem enged új lapot, a link ugyanitt nyílik meg.
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[target="_blank"]'); if (!a) return;
+  e.preventDefault();
+  let u = a.href;
+  let w = null; try { w = window.open(u, '_blank'); } catch (x) {}
+  if (w) { try { w.opener = null; } catch (x) {} } else location.href = u;
+}, true);
+</script>
 </body>
 </html>
