@@ -28,7 +28,7 @@
     }
     // ---------- élmény-felület (mint MEDITÁCIÓ / ÁLOM) ----------
     start() { if (this.run) return; this.run = true; if (this.want) this.audio(); }
-    stop() { if (!this.run) return; this.run = false; this.mute(); }
+    stop() { if (!this.run) return; this.run = false; this.mute(); if (this.ac) { try { this.master.gain.cancelScheduledValues(0); this.master.gain.value = 0; } catch (e) {} this.ac.suspend(); } }   // háttérbe kerülve azonnal csend (a telefon az időzítőket ilyenkor leállítja)
     setWant(on) { if (on === this.want) return; this.want = on; if (!this.run) return; if (on) this.audio(); else this.mute(); }
     locked() { return !!(this.run && this.want && this.ac && this.ac.state !== 'running'); }
     destroy() { this.stop(); cancelAnimationFrame(this.raf); if (this.ac) this.ac.close(); }
