@@ -41,15 +41,16 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 <div id="legzes"><b></b><i></i></div>
 <button id="gomb" aria-label="Beállítások">⚙</button>
 <div id="panel"></div>
-<script src="./mandala.js?v=3"></script>
+<script src="./mandala.js?v=5"></script>
 <script>
 (function () {
-  const KEY = 'mandala-kiserlet';
+  const KEY = 'mandala-kiserlet-2';
   // [kulcs, felirat, típus, alap, (min, max, lépés | opciók), egység]
   const OPT = [
     ['h', 'A kör'],
-    ['körMéret', 'Kör mérete nyugalomban', 'r', 80, 40, 98, 1, '%'],
-    ['körKitágulás', 'Kitágulás (100 = kitölti a képernyőt)', 'r', 100, 0, 100, 5, '%'],
+    ['körMéret', 'Kör nyugalomban (a rövidebb oldal %-a)', 'r', 50, 20, 95, 1, '%'],
+    ['körMax', 'Kör kitágulva (a rövidebb oldal %-a)', 'r', 94, 30, 100, 1, '%'],
+    ['körKitölt', 'Kitágulva kitölti a képernyőt', 'c', false],
     ['körPerem', 'Vékony arany perem', 'c', false],
     ['h', 'A légzés'],
     ['körBe', 'Belégzés', 'r', 6, 2, 15, 0.5, ' mp'],

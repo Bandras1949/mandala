@@ -150,15 +150,16 @@
     }
     korNow() { const b = this.kb; if (b) b.force = true; }
     korGeo(P, W, H) {
-      const b = this.kb || { ph: 'born', t: 0 }, r0 = Math.min(W, H) / 2 * Math.max(0.2, num(P['körMéret'], 80) / 100), rd = Math.hypot(W, H) / 2;
-      const rf = r0 + (rd * 1.02 - r0) * Math.max(0, num(P['körKitágulás'], 100)) / 100, turns = num(P['körSpirál'], 1.2) * Math.PI * 2;
+      const b = this.kb || { ph: 'born', t: 0 }, r0 = Math.min(W, H) / 2 * Math.max(0.2, num(P['körMéret'], 50) / 100), rd = Math.hypot(W, H) / 2;
+      // a kör legnagyobb mérete: alapból kör marad a képernyőn belül (a rövidebb oldal adott %-a); „kitölti a képernyőt” módban éppen befedi a képernyőt
+      const rf = P['körKitölt'] === true ? rd + r0 * 0.02 : Math.max(r0, Math.min(W, H) / 2 * Math.max(0.2, num(P['körMax'], 94) / 100)), turns = num(P['körSpirál'], 1.2) * Math.PI * 2;
       const D = Math.max(1, num(P['körHalálMp'], 7)), B = Math.max(1, num(P['körSzületésMp'], 8));
       this.korLbl = ''; this.korMarad = 0;
       if (b.ph === 'breathe') {
         const g = this.korLeg(P), t = b.t; let R, lb, rem;
         if (t < g.be) { R = r0 + (rf - r0) * eio(t / g.be); lb = 'be'; rem = g.be - t; }
         else if (t < g.be + g.bent) { R = rf; lb = 'bent'; rem = g.be + g.bent - t; }
-        else if (t < g.be + g.bent + g.ki) { R = rf - (rf - r0) * eio((t - g.be - g.bent) / g.ki); lb = R <= Math.min(W, H) / 2 ? 'ki' : ''; rem = g.be + g.bent + g.ki - t; }   // KILÉGZÉS csak akkor, ha már az egész kör látszik
+        else if (t < g.be + g.bent + g.ki) { R = rf - (rf - r0) * eio((t - g.be - g.bent) / g.ki); lb = 'ki'; rem = g.be + g.bent + g.ki - t; }   // KILÉGZÉS csak akkor, ha már az egész kör látszik
         else { R = r0; lb = 'kint'; rem = g.L - t; }
         this.korLbl = lb; this.korMarad = rem;
         return { R, rot: 0, k: 1, rf, r0, ph: b.ph };
