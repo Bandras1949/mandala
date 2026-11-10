@@ -88,10 +88,11 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   const DEF = { szín: 'váltakozó', tükör: 'váltakozó', zene: 'váltakozó', söprés: 'be' };
   let S = { ...DEF };
   try { const o = JSON.parse(store.get('mandala-beallitas') || '{}'); for (const k in DEF) if (typeof o[k] === 'string' && OPT.find(x => x[0] === k)[2].some(v => v[0] === o[k])) S[k] = o[k]; } catch (e) {}
+  let first = true;   // a próbaváltozatban az első söprés már 1 perc után jön, utána 3 percenként
   const eff = () => premium ? S : DEF;   // a próbaváltozat az alapbeállításokkal fut
   const P = () => { const s = eff(); return {
     mandalaMinta: 'véletlen', mandalaSzín: s.szín, mandalaTükör: s.tükör, mandalaForgás: 0.6, mandalaLélegzés: true,
-    mandalaVáltás: true, mandalaVáltásPerc: 1, mandalaSöprés: s.söprés !== 'ki', mandalaSöprésPerc: 3, mandalaZene: s.zene, mandalaHangerő: 70 }; };
+    mandalaVáltás: true, mandalaVáltásPerc: 1, mandalaSöprés: s.söprés !== 'ki', mandalaSöprésPerc: premium || !first ? 3 : 1, mandalaZene: s.zene, mandalaHangerő: 70 }; };
   const pats = [
     ['AD-01', 480], ['AD-02', 420], ['AD-03', 420], ['AD-04', 480], ['AD-05', 520], ['AD-06', 420],
     ['AD-01f', 480], ['AD-03f', 420], ['AD-04f', 480], ['AD-05f', 520],
@@ -128,7 +129,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   };
   // ajánlat minden újjászületés után (csak a próbaváltozatban), kb. 10 mp-ig
   const aj = $('ajanl');
-  mn.onReborn = () => { if (premium) return; aj.classList.add('on'); clearTimeout(aj.t); aj.t = setTimeout(() => aj.classList.remove('on'), 10000); };
+  mn.onReborn = () => { if (premium) return; if (first) { first = false; cur = P(); mn.sweepLeft = 180; } aj.classList.add('on'); clearTimeout(aj.t); aj.t = setTimeout(() => aj.classList.remove('on'), 10000); };
   window.__mandalaCsend = () => { if (started && on) { on = false; mn.setWant(false); } };
   let bc = null; try { bc = new BroadcastChannel('banky-hang'); bc.onmessage = () => { if (started && on) { on = false; mn.setWant(false); } }; } catch (e) {}
   window.addEventListener('pointerup', () => { try { bc && bc.postMessage(1); } catch (e) {} }, true);
