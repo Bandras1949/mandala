@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MANDALA – Lélegezzünk együtt</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#D4AF37;--ink:#0B0B0C;--ivory:#F2EAD8}
+html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;font-family:'Cormorant Garamond',Georgia,serif}
+#cv{position:fixed;inset:0;width:100%;height:100%;display:block}
+#cim{position:fixed;inset:0;background:var(--ink);color:var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vh;cursor:pointer;z-index:5;transition:opacity 1.5s}
+#cim h1{margin:0;font:600 clamp(36px,8vw,90px) Cinzel,Georgia,serif;letter-spacing:.14em}
+#cim p.ind{margin-top:14vh;font-size:clamp(16px,2vw,22px);opacity:.75}
+#cim p{margin:0;font-style:italic;font-size:clamp(17px,2.4vw,26px);color:var(--ivory);text-align:center;padding:0 6vw}
+#gomb{position:fixed;right:calc(env(safe-area-inset-right) + 14px);bottom:calc(env(safe-area-inset-bottom) + 14px);width:46px;height:46px;border-radius:50%;border:1px solid rgba(212,175,55,.6);background:rgba(0,0,0,.55);color:var(--gold);font-size:22px;cursor:pointer;z-index:10}
+#allapot{position:fixed;left:calc(env(safe-area-inset-left) + 14px);top:calc(env(safe-area-inset-top) + 12px);color:rgba(242,234,216,.75);font:italic 16px 'Cormorant Garamond',Georgia,serif;z-index:10;pointer-events:none;text-shadow:0 0 6px #000}
+#panel{position:fixed;right:calc(env(safe-area-inset-right) + 12px);bottom:calc(env(safe-area-inset-bottom) + 70px);width:min(360px,calc(100vw - 24px));max-height:calc(100vh - 100px);overflow:auto;box-sizing:border-box;padding:14px 16px;border-radius:14px;background:rgba(12,12,13,.93);border:1px solid rgba(212,175,55,.45);color:var(--ivory);z-index:10;display:none;font-size:16px}
+#panel.on{display:block}
+#panel h2{margin:0 0 8px;font:600 15px Cinzel,Georgia,serif;letter-spacing:.12em;color:var(--gold)}
+.sor{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;margin:9px 0}
+.sor label{font-size:16px}
+.sor output{font-size:15px;color:var(--gold);min-width:44px;text-align:right}
+.sor input[type=range]{grid-column:1/3;width:100%;accent-color:var(--gold)}
+.sor select{grid-column:2;background:#1a1a1c;color:var(--ivory);border:1px solid #555;border-radius:6px;padding:3px 6px;font:15px 'Cormorant Garamond',Georgia,serif}
+.sor input[type=checkbox]{width:20px;height:20px;accent-color:var(--gold)}
+.gombok{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.gombok button{flex:1;padding:8px 10px;border-radius:8px;border:1px solid var(--gold);background:transparent;color:var(--gold);font:600 15px 'Cormorant Garamond',Georgia,serif;cursor:pointer}
+#szoveg{display:none;width:100%;box-sizing:border-box;margin-top:10px;height:150px;background:#1a1a1c;color:var(--ivory);border:1px solid #555;border-radius:6px;font:13px/1.35 ui-monospace,Menlo,monospace;padding:6px}
+.hr{height:1px;background:rgba(212,175,55,.25);margin:12px 0}
+#legzes{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 5vh);text-align:center;pointer-events:none;z-index:4;color:#F2EAD8;text-shadow:0 0 10px #000,0 0 22px #000}
+#legzes b{display:block;font:600 clamp(22px,4.2vw,44px) Cinzel,Georgia,serif;letter-spacing:.3em;padding-left:.3em;transition:opacity 1.2s ease;opacity:0}
+#legzes i{display:block;margin-top:4px;font:italic clamp(16px,2.2vw,24px) 'Cormorant Garamond',Georgia,serif;opacity:.8}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div id="cim"><h1>MANDALA</h1><p>Ha együtt tudsz velem lélegezni, meglátod, lelassulsz.</p><p class="ind">Koppints az indításhoz</p></div>
+<div id="allapot"></div>
+<div id="legzes"><b></b><i></i></div>
+<button id="gomb" aria-label="Beállítások">⚙</button>
+<div id="panel"></div>
+<script src="./mandala.js?v=3"></script>
+<script>
+(function () {
+  const KEY = 'mandala-kiserlet';
+  // [kulcs, felirat, típus, alap, (min, max, lépés | opciók), egység]
+  const OPT = [
+    ['h', 'A kör'],
+    ['körMéret', 'Kör mérete nyugalomban', 'r', 80, 40, 98, 1, '%'],
+    ['körKitágulás', 'Kitágulás (100 = kitölti a képernyőt)', 'r', 100, 0, 100, 5, '%'],
+    ['körPerem', 'Vékony arany perem', 'c', false],
+    ['h', 'A légzés'],
+    ['körBe', 'Belégzés', 'r', 6, 2, 15, 0.5, ' mp'],
+    ['körBent', 'Benntartás', 'r', 4, 0, 15, 0.5, ' mp'],
+    ['körKi', 'Kilégzés', 'r', 8, 2, 20, 0.5, ' mp'],
+    ['körKint', 'Kinntartás', 'r', 2, 0, 15, 0.5, ' mp'],
+    ['felirat', 'Légzésfeliratok', 'c', true],
+    ['szamlalo', 'Visszaszámlálás a felirat alatt', 'c', false],
+    ['h', 'Feloldódás és újjászületés'],
+    ['körVáltásMin', 'Váltás legkorábban (lélegzet)', 'r', 2, 1, 6, 1, ''],
+    ['körVáltásMax', 'Váltás legkésőbb (lélegzet)', 'r', 4, 1, 8, 1, ''],
+    ['körHalálMp', 'Összehúzódás pontig', 'r', 7, 2, 20, 0.5, ' mp'],
+    ['körÜresMp', 'Üresség', 'r', 2, 0, 8, 0.5, ' mp'],
+    ['körSzületésMp', 'Újjászületés', 'r', 8, 2, 20, 0.5, ' mp'],
+    ['körSpirál', 'Spirálos csavarodás (fordulat)', 'r', 1.2, 0, 3, 0.1, ''],
+    ['körHomok', 'Pergő homok a peremen', 'c', true],
+    ['körÜtés', 'Ütés a pontnál (hangerő)', 'r', 60, 0, 100, 5, '%'],
+    ['körCsakEgyszer', 'Ingyenes mód: spirál csak egyszer', 'c', false],
+    ['h', 'A minta'],
+    ['mandalaForgás', 'Forgás sebessége', 'r', 0.6, 0, 2, 0.1, ''],
+    ['mandalaLélegzés', 'Kis lélegzés a mintán belül', 'c', false],
+    ['mandalaSzín', 'Színpár', 's', 'váltakozó', ['váltakozó', 'arany–fekete', 'arany–éjkék', 'ezüst–fekete', 'elefántcsont–bordó']],
+    ['mandalaTükör', 'Tükrözés', 's', 'váltakozó', ['váltakozó', '6', '8', '12', 'nincs']],
+    ['zene', 'Zene', 's', 'sorban', ['sorban', 'Ancient Ritual Flame', 'Dreamcatcher', 'Ritual Ambient Folk 1', 'Ritual Ambient Folk 2', 'Ritual of the Ancients', 'Slow Morning Ritual', 'Whirling Silence', 'nincs']],
+  ];
+  const DEF = {}; OPT.forEach(o => { if (o[0] !== 'h') DEF[o[0]] = o[3]; });
+  let S = Object.assign({}, DEF); try { const o = JSON.parse(localStorage.getItem(KEY) || '{}'); for (const k in DEF) if (typeof o[k] === typeof DEF[k]) S[k] = o[k]; } catch (e) {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+  const P = () => Object.assign({}, S, { mandalaKör: true, mandalaMinta: 'véletlen', mandalaVáltás: false, mandalaSöprés: false, mandalaZene: S.zene === 'sorban' ? 'váltakozó' : S.zene === 'nincs' ? 'ki' : S.zene, mandalaHangerő: 70 });
+  let cur = P();
+  const pats = [['AD-01f', 480], ['AD-03f', 420], ['AD-04f', 480], ['AD-05f', 520]].map(([n, tile]) => ({ src: 'mintak/' + n + '.png', tile, name: n }));
+  let started = false;
+  const mn = new window.Mandala(document.getElementById('cv'), () => ({ want: started, paused: false, P: cur, pats }));
+
+  // panel
+  const pan = document.getElementById('panel'); let h = '';
+  OPT.forEach(o => {
+    if (o[0] === 'h') { h += (h ? '<div class="hr"></div>' : '') + `<h2>${o[1]}</h2>`; return; }
+    const [k, l, t] = o;
+    if (t === 'r') h += `<div class="sor"><label for="${k}">${l}</label><output id="o-${k}"></output><input type="range" id="${k}" min="${o[4]}" max="${o[5]}" step="${o[6]}"></div>`;
+    else if (t === 'c') h += `<div class="sor"><label for="${k}">${l}</label><input type="checkbox" id="${k}"></div>`;
+    else h += `<div class="sor"><label for="${k}">${l}</label><select id="${k}">${o[4].map(v => `<option>${v}</option>`).join('')}</select></div>`;
+  });
+  h += `<div class="gombok"><button id="most">Feloldódás most</button><button id="alap">Alapértékek</button><button id="szovegGomb">Értékek szövegként</button></div><textarea id="szoveg" readonly></textarea>`;
+  pan.innerHTML = h;
+  const unit = k => (OPT.find(o => o[0] === k) || [])[7] || '';
+  const show = () => OPT.forEach(o => { const k = o[0]; if (k === 'h') return; const el = document.getElementById(k); if (o[2] === 'c') el.checked = !!S[k]; else el.value = S[k]; const out = document.getElementById('o-' + k); if (out) out.textContent = S[k] + unit(k); });
+  show();
+  OPT.forEach(o => { const k = o[0]; if (k === 'h') return; const el = document.getElementById(k);
+    el.addEventListener('input', () => { S[k] = o[2] === 'c' ? el.checked : o[2] === 'r' ? +el.value : el.value;
+      if (k === 'körVáltásMin' && S.körVáltásMax < S.körVáltásMin) S.körVáltásMax = S.körVáltásMin;
+      if (k === 'körVáltásMax' && S.körVáltásMin > S.körVáltásMax) S.körVáltásMin = S.körVáltásMax;
+      cur = P(); save(); show(); }); });
+  const stopP = e => e.stopPropagation();
+  ['pointerdown', 'pointerup', 'click'].forEach(ev => { pan.addEventListener(ev, stopP); document.getElementById('gomb').addEventListener(ev, stopP); });
+  document.getElementById('gomb').addEventListener('click', () => pan.classList.toggle('on'));
+  document.getElementById('most').addEventListener('click', () => mn.korNow());
+  document.getElementById('alap').addEventListener('click', () => { S = Object.assign({}, DEF); cur = P(); save(); show(); });
+  document.getElementById('szovegGomb').addEventListener('click', () => { const t = document.getElementById('szoveg'); t.style.display = 'block'; t.value = OPT.filter(o => o[0] !== 'h').map(o => o[1] + ': ' + (o[2] === 'c' ? (S[o[0]] ? 'igen' : 'nem') : S[o[0]] + unit(o[0]))).join('\n'); t.select(); });
+
+  // állapotkijelzés: hol tart a ciklus
+  const all = document.getElementById('allapot');
+  const NEV = { breathe: 'lélegzik', die: 'feloldódik', empty: 'üresség', born: 'újjászületik' };
+  setInterval(() => { const b = mn.kb; all.textContent = !started || !b ? '' : NEV[b.ph] + (b.ph === 'breathe' ? ` · ${b.n + 1}. lélegzet / ${b.need}` : ''); }, 250);
+
+  // légzésfeliratok: BELÉGZÉS · BENNTART · KILÉGZÉS · KINNTART
+  const LG = { be: 'BELÉGZÉS', bent: 'BENNTART', ki: 'KILÉGZÉS', kint: 'KINNTART' }, lgB = document.querySelector('#legzes b'), lgI = document.querySelector('#legzes i');
+  let lgLast = '';
+  (function lg() {
+    const l = started && S.felirat ? mn.korLbl || '' : '';
+    if (l !== lgLast) { lgLast = l; if (l) { lgB.style.opacity = '0'; setTimeout(() => { lgB.textContent = LG[l]; lgB.style.opacity = '1'; }, lgB.textContent ? 250 : 0); } else lgB.style.opacity = '0'; }
+    lgI.textContent = l && S.szamlalo ? Math.ceil(mn.korMarad || 0) : '';
+    requestAnimationFrame(lg);
+  })();
+
+  // indítás, hang
+  const cim = document.getElementById('cim');
+  window.addEventListener('pointerup', () => {
+    if (!started) { started = true; mn.want = true; mn.start(); cim.style.opacity = '0'; setTimeout(() => cim.style.display = 'none', 1600); return; }
+    if (mn.locked()) mn.audio();
+  });
+  document.addEventListener('visibilitychange', () => { if (!started) return; if (document.hidden) mn.stop(); else mn.start(); });
+})();
+</script>
+</body>
+</html>
