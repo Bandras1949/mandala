@@ -86,7 +86,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   <div id="kinn" class="lab" style="display:none">Teljes változat · <a href="#" id="torol">kulcs törlése</a></div>
   <div class="lab">Bánky András másik appja: <a id="kal" href="https://bandras1949.github.io/kaleidoszkop/" target="_blank" rel="noopener">Kaleidoszkóp</a> · <a href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener">mindkettő együtt</a><br>Koppintás: hang be/ki · dupla koppintás: új minta · 📷: kép megállítása</div>
 </div>
-<script src="./mandala.js?v=8"></script>
+<script src="./mandala.js?v=9"></script>
 <script>
 (function () {
   // ---------- teljes változat (licenckulcs) ----------
@@ -123,13 +123,13 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   // a kísérletben véglegesített értékek (2026-11-11)
   const P = () => ({
     mandalaKör: true, mandalaMinta: 'véletlen', mandalaVáltás: false, mandalaSöprés: false,
-    mandalaSzín: eff('szín'), mandalaTükör: eff('tükör'), mandalaForgás: 1.2, mandalaLélegzés: true, mandalaNagyítás: 100,
+    mandalaSzín: eff('szín'), mandalaTükör: eff('tükör'), mandalaForgás: 1.2, mandalaLélegzés: true, mandalaNagyítás: 65,
     körMéret: 50, körMax: 94, körKitölt: false, körPerem: false,
     körBe: eff('be'), körBent: eff('bent'), körKi: eff('ki'), körKint: eff('kint'),
     körVáltásMin: 2, körVáltásMax: 4, körHalálMp: 7, körÜresMp: 2, körSzületésMp: 8, körSpirál: 1.2, körHomok: true, körÜtés: 60,
     körCsakEgyszer: !premium,   // próbaváltozat: a feloldódás–újjászületés csak egyszer, utána áttűnéssel vált
     mandalaZene: eff('zene') === 'sorban' ? 'váltakozó' : eff('zene') === 'nincs' ? 'ki' : eff('zene'), mandalaHangerő: 70 });
-  const FEK = [['AD-01f', 480], ['AD-03f', 420], ['AD-04f', 480], ['AD-05f', 520]], VON = [['AD-07', 420], ['AD-08', 420], ['AD-09', 420]];
+  const FEK = [['AD-01f', 480], ['AD-03f', 420], ['AD-04f', 480], ['AD-05f', 520]], VON = [['AD-07', 420], ['AD-08', 420], ['AD-09', 420], ['AD-01', 480], ['AD-02', 420], ['AD-03', 420], ['AD-04', 480], ['AD-05', 520], ['AD-06', 420]];
   const mk = a => a.map(([n, tile]) => ({ src: 'mintak/' + n + '.png', tile, name: n })), PATS = { mind: mk(FEK.concat(VON)), fekete: mk(FEK), vonalas: mk(VON) };
 
   const $ = id => document.getElementById(id), cim = $('cim'), hang = $('hang'), gomb = $('gomb'), foto = $('foto'), panel = $('panel');
