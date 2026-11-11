@@ -9,7 +9,11 @@
     'ezüst–fekete': ['#C9CED6', '#0B0B0C'],
     'elefántcsont–bordó': ['#F2EAD8', '#5A1022'],
   };
-  const TRACKS = { 'Rising Sun': 'mandala/rising-sun.mp3' }, ORDER = Object.keys(TRACKS);   // egy zene, hézagmentes áttűnéssel ismételve
+  const TRACKS = {   // sorban egymás után (váltakozó), vagy bármelyik kiválasztható
+    'Ancient Ritual Flame': 'mandala/01-ancient-ritual-flame.mp3', 'Dreamcatcher': 'mandala/02-dreamcatcher.mp3',
+    'Ritual Ambient Folk 1': 'mandala/03-ritual-ambient-folk-1.mp3', 'Ritual Ambient Folk 2': 'mandala/04-ritual-ambient-folk-2.mp3',
+    'Ritual of the Ancients': 'mandala/05-ritual-of-the-ancients.mp3', 'Slow Morning Ritual': 'mandala/06-slow-morning-ritual.mp3',
+    'Whirling Silence': 'mandala/07-whirling-silence.mp3' }, ORDER = Object.keys(TRACKS);
   const XF = 5;   // zenei áttűnés (mp)
   const HOLD = 3.5, SWEEP = 16.5, EMPTY = 2, BUILD = 21;   // a szertartás szakaszai (mp)
   const eio = p => p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
@@ -82,7 +86,9 @@
       const per = Math.max(0.25, num(P['mandalaSöprésPerc'], 3)) * 60, vPer = Math.max(0.25, num(P['mandalaVáltásPerc'], 1)) * 60;
       const swOn = P['mandalaSöprés'] !== false && P['mandalaVáltás'] !== false;
       if (this.sweepLeft == null || this.pkS !== per) { this.sweepLeft = this.sweepLeft == null ? per : Math.min(this.sweepLeft, per); this.pkS = per; }
-      if (want && !this.rit) {
+      const KOR = P['mandalaKör'] === true;
+      if (KOR) { if (this.rit) { this.rit = null; this.grains = []; this.duck(1, 0.5); } if (want && dt > 0) this.korStep(dt, P, pats); }
+      if (want && !this.rit && !KOR) {
         if (swOn) { this.sweepLeft -= dt; if (this.sweepLeft <= 0) this.ritual(); }
         if (!this.rit && P['mandalaVáltás'] !== false) { this.left -= dt; if (this.left <= 0) { if (swOn && this.sweepLeft < 25) this.left = vPer; else this.next(); } }   // söprés előtt nincs áttűnés
       }
@@ -105,18 +111,84 @@
       const need = Math.min(3600, Math.ceil(2 * (Rr / 0.9 + 40)));
       const key = tl.width + '|' + need + '|' + c.pat.src + c.pair;
       if (this.key !== key) { this.key = key; const S = this.src; S.width = S.height = need; const s = S.getContext('2d'); s.fillStyle = s.createPattern(tl, 'repeat'); s.fillRect(0, 0, need, need); }
-      const S = this.src, n = c.mir, a = Math.PI * 2 / (n || 1), cx = W / 2, cy = H / 2, ang = this.t * spin * 0.025 * c.dir;
-      if (!n) { x.save(); x.translate(cx, cy); x.scale(zoom, zoom); x.rotate(ang); x.drawImage(S, -S.width / 2, -S.height / 2); x.restore(); }
+      const KR = P['mandalaKör'] === true ? this.korGeo(P, W, H) : null; const zk = (KR ? KR.k : 1) * Math.max(0.2, num(P['mandalaNagyítás'], 100) / 100);
+      const S = this.src, n = c.mir, a = Math.PI * 2 / (n || 1), cx = W / 2, cy = H / 2, ang = this.t * spin * 0.025 * c.dir + (KR ? KR.rot * c.dir : 0);
+      if (!n) { x.save(); x.translate(cx, cy); x.scale(zoom * zk, zoom * zk); x.rotate(ang); x.drawImage(S, -S.width / 2, -S.height / 2); x.restore(); }
       for (let i = 0; n && i < n; i++) {
         x.save(); x.translate(cx, cy);
         if (i % 2) { x.rotate((i + 1) * a); x.scale(1, -1); } else x.rotate(i * a);
         x.beginPath(); x.moveTo(0, 0); x.arc(0, 0, Rr + 4, -0.002, a + 0.002); x.closePath(); x.clip();
-        x.scale(zoom, zoom); x.rotate(ang); x.drawImage(S, -S.width / 2, -S.height / 2); x.restore();
+        x.scale(zoom * zk, zoom * zk); x.rotate(ang); x.drawImage(S, -S.width / 2, -S.height / 2); x.restore();
       }
       if (this.snapA > 0 && this.snap) { x.globalAlpha = this.snapA; x.drawImage(this.snap, 0, 0, W, H); x.globalAlpha = 1; this.snapA = Math.max(0, this.snapA - dt / 4); }
       if (R0 && R0.ph === 'build') this.buildMask(dt, W, H, dpr);
+      if (KR) this.korMask(dt, KR, W, H, dpr, P);
       this.drawnOnce = true;
     }
+
+    // ---------- KÖR-mandala: kör alakú, nagyot lélegzik; 2–4 lélegzetenként pontig zsugorodik (meghal) → üresség → újjászületik ----------
+    korNeed(P) { const lo = Math.max(1, Math.round(num(P['körVáltásMin'], 2))), hi = Math.max(lo, Math.round(num(P['körVáltásMax'], 4))); return lo + Math.floor(Math.random() * (hi - lo + 1)); }
+    korStep(dt, P, pats) {
+      const b = this.kb || (this.kb = { ph: 'born', t: 0, n: 0, need: this.korNeed(P), deaths: 0 });
+      const L = this.korLeg(P).L, D = Math.max(1, num(P['körHalálMp'], 7)), E = Math.max(0, num(P['körÜresMp'], 2)), B = Math.max(1, num(P['körSzületésMp'], 8));
+      b.t += dt;
+      if (b.force && b.ph === 'breathe') { b.force = false; b.ph = 'die'; b.t = 0; b.deaths++; this.grains = []; return; }
+      if (b.ph === 'breathe' && b.t >= L) {
+        b.t -= L; b.n++;
+        if (b.n >= b.need) {
+          b.n = 0; b.need = this.korNeed(P);
+          if (P['körCsakEgyszer'] === true && b.deaths >= 1) { this.snapshot(); this.choose(P, pats); }   // ingyenes: a spirálos halál csak egyszer, utána áttűnés
+          else { b.ph = 'die'; b.t = 0; b.deaths++; this.grains = []; }
+        }
+      } else if (b.ph === 'die' && b.t >= D) { b.ph = 'empty'; b.t = 0; this.korBowl(P); }
+      else if (b.ph === 'empty' && b.t >= E) { this.choose(P, pats); this.t += 20 + Math.random() * 60; b.ph = 'born'; b.t = 0; }
+      else if (b.ph === 'born' && b.t >= B) { b.ph = 'breathe'; b.t = 0; b.n = 0; if (this.onReborn && b.deaths) try { this.onReborn(); } catch (e) {} }
+    }
+    korLeg(P) {   // a légzés négy szakasza (mp): belégzés, benntartás, kilégzés, kinntartás
+      const be = Math.max(1, num(P['körBe'], 6)), bent = Math.max(0, num(P['körBent'], 4)), ki = Math.max(1, num(P['körKi'], 8)), kint = Math.max(0, num(P['körKint'], 2));
+      return { be, bent, ki, kint, L: be + bent + ki + kint };
+    }
+    korNow() { const b = this.kb; if (b) b.force = true; }
+    korGeo(P, W, H) {
+      const b = this.kb || { ph: 'born', t: 0 }, r0 = Math.min(W, H) / 2 * Math.max(0.2, num(P['körMéret'], 50) / 100), rd = Math.hypot(W, H) / 2;
+      // a kör legnagyobb mérete: alapból kör marad a képernyőn belül (a rövidebb oldal adott %-a); „kitölti a képernyőt” módban éppen befedi a képernyőt
+      const rf = P['körKitölt'] === true ? rd + r0 * 0.02 : Math.max(r0, Math.min(W, H) / 2 * Math.max(0.2, num(P['körMax'], 94) / 100)), turns = num(P['körSpirál'], 1.2) * Math.PI * 2;
+      const D = Math.max(1, num(P['körHalálMp'], 7)), B = Math.max(1, num(P['körSzületésMp'], 8));
+      this.korLbl = ''; this.korMarad = 0;
+      if (b.ph === 'breathe') {
+        const g = this.korLeg(P), t = b.t; let R, lb, rem;
+        if (t < g.be) { R = r0 + (rf - r0) * eio(t / g.be); lb = 'be'; rem = g.be - t; }
+        else if (t < g.be + g.bent) { R = rf; lb = 'bent'; rem = g.be + g.bent - t; }
+        else if (t < g.be + g.bent + g.ki) { R = rf - (rf - r0) * eio((t - g.be - g.bent) / g.ki); lb = 'ki'; rem = g.be + g.bent + g.ki - t; }   // KILÉGZÉS csak akkor, ha már az egész kör látszik
+        else { R = r0; lb = 'kint'; rem = g.L - t; }
+        this.korLbl = lb; this.korMarad = rem;
+        return { R, rot: 0, k: 1, rf, r0, ph: b.ph };
+      }
+      if (b.ph === 'die') { const e = eio(Math.min(1, b.t / D)); return { R: r0 * (1 - e), rot: turns * e * e, k: 1 - 0.45 * e, rf, r0, ph: b.ph, e }; }
+      if (b.ph === 'empty') return { R: 0, rot: 0, k: 0.55, rf, r0, ph: b.ph };
+      const e = eio(Math.min(1, b.t / B)); return { R: r0 * e, rot: -turns * (1 - e) * (1 - e), k: 0.55 + 0.45 * e, rf, r0, ph: b.ph, e };
+    }
+    korMask(dt, g, W, H, dpr, P) {
+      const x = this.cv.getContext('2d'), cx = W / 2, cy = H / 2, R = g.R, rd = Math.hypot(W, H) / 2, bg = PAIRS[this.cur.pair][1], ink = PAIRS[this.cur.pair][0], [a, b, c] = hex(bg);
+      x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1;
+      if (R < rd) {
+        x.fillStyle = bg; x.beginPath(); x.rect(0, 0, W, H); x.arc(cx, cy, Math.max(0, R), 0, Math.PI * 2, true); x.fill('evenodd');
+        if (R > 1) { const w = Math.max(2, g.r0 * 0.05), gr = x.createRadialGradient(cx, cy, Math.max(0, R - w), cx, cy, R); gr.addColorStop(0, `rgba(${a},${b},${c},0)`); gr.addColorStop(1, `rgba(${a},${b},${c},1)`); x.fillStyle = gr; x.beginPath(); x.arc(cx, cy, R + 1, 0, Math.PI * 2); x.fill(); }
+        if (P['körPerem'] === true && R > 2) { x.strokeStyle = ink; x.globalAlpha = 0.45 * Math.min(1, R / (g.r0 * 0.3)); x.lineWidth = 1.5 * dpr; x.beginPath(); x.arc(cx, cy, R, 0, Math.PI * 2); x.stroke(); x.globalAlpha = 1; }
+      }
+      const G = this.grains || (this.grains = []), dir = this.cur.dir || 1;
+      if (P['körHomok'] !== false && g.ph === 'die') {   // a peremről befelé pergő homok
+        const n = Math.min(400, Math.round(dt * 900 * (0.3 + R / g.r0)));
+        for (let i = 0; i < n && G.length < 4000; i++) G.push({ r: R * (0.95 + Math.random() * 0.1), a: Math.random() * Math.PI * 2, v: 0.12 + Math.random() * 0.25, w: (0.4 + Math.random() * 0.8) * dir, s: (0.8 + Math.random() * 1.4) * dpr });
+      }
+      if (G.length) {
+        const pr = g.ph === 'die' ? g.r0 * 0.05 * Math.sqrt(g.e || 0) : 0;
+        x.fillStyle = ink; x.globalAlpha = 0.85;
+        for (let i = G.length - 1; i >= 0; i--) { const q = G[i]; q.r -= q.v * g.r0 * dt; q.a += q.w * dt; if (q.r < pr * 0.6 || q.r <= 0 || (g.ph !== 'die' && Math.random() < dt * 2.5)) { G.splice(i, 1); continue; } x.fillRect(cx + Math.cos(q.a) * q.r, cy + Math.sin(q.a) * q.r, q.s, q.s); }
+        x.globalAlpha = 1;
+      }
+    }
+    korBowl(P) { const v = Math.max(0, num(P['körÜtés'], 60)) / 100; if (!v) return; const ac = this.ac; if (!ac || ac.state !== 'running' || !this.want || !this.vg) return; this.strike(ac.currentTime + 0.02, false, v * 1.4); }
 
     // ---------- homokmandala-szertartás ----------
     ritual() { this.rit = { ph: 'hold', t: 0 }; this.snapA = 0; this.grains = []; this.duck(0, 3); }   // a jelek alatt a zene elhallgat
@@ -216,8 +288,9 @@
       try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
       if (!this.ac) {
         const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
-        this.ac = new AC(); this.master = this.ac.createGain(); this.master.gain.value = 0; this.master.connect(this.ac.destination);
-        this.bufs = {}; for (const [k, u] of Object.entries(TRACKS)) fetch(u).then(r => r.arrayBuffer()).then(b => this.ac.decodeAudioData(b)).then(buf => { this.bufs[k] = buf; }).catch(() => {});
+        try { this.ac = new AC({ sampleRate: 32000 }); } catch (e) { this.ac = new AC(); }   // kisebb memória a hosszú zenékhez
+        this.master = this.ac.createGain(); this.master.gain.value = 0; this.master.connect(this.ac.destination);
+        this.bufs = {}; this.pend = {};   // a zenék csak akkor töltődnek, amikor sorra kerülnek (egyszerre legfeljebb kettő a memóriában)
       }
       if (this.run && this.want) { this.ac.resume(); this.master.gain.cancelScheduledValues(this.ac.currentTime); this.master.gain.setTargetAtTime(1, this.ac.currentTime, 1.2); }
     }
@@ -232,9 +305,10 @@
       const want = z === 'váltakozó' ? null : z;
       if (this.voice && want && this.voice.name !== want) { this.endVoice(this.voice, ac.currentTime, XF); this.voice = null; }
       const now = ac.currentTime;
+      const nextName = want || (this.voice ? ORDER[(ORDER.indexOf(this.voice.name) + 1) % ORDER.length] : ORDER[0]);
+      if (!this.voice || now >= this.voice.end - 90) this.need(nextName);   // a következő zene másfél perccel előre töltődik
       if (!this.voice || now >= this.voice.end - XF) {
-        let name = want || (this.voice ? ORDER[(ORDER.indexOf(this.voice.name) + 1) % ORDER.length] : ORDER[0]);
-        const buf = this.bufs[name]; if (!buf) return;
+        const name = nextName, buf = this.bufs[name]; if (!buf) return; this.trim([name, this.voice && this.voice.name]);
         const t0 = this.voice ? Math.max(now, this.voice.end - XF) : now + 0.05;
         const s = ac.createBufferSource(), g = ac.createGain(); s.buffer = buf; s.connect(g); g.connect(this.mg);
         g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(1, t0 + XF);
@@ -242,6 +316,11 @@
         this.voice = { s, g, name, end: t0 + buf.duration };
       }
     }
+    need(name) {
+      if (!name || this.bufs[name] || this.pend[name]) return; this.pend[name] = true;
+      fetch(TRACKS[name]).then(r => r.arrayBuffer()).then(b => new Promise((ok, no) => this.ac.decodeAudioData(b, ok, no))).then(buf => { this.bufs[name] = buf; }).catch(() => {}).finally(() => { this.pend[name] = false; });
+    }
+    trim(keep) { for (const k in this.bufs) if (!keep.includes(k)) delete this.bufs[k]; }
     endVoice(v, t, d) { try { v.g.gain.cancelScheduledValues(t); v.g.gain.setValueAtTime(v.g.gain.value, t); v.g.gain.linearRampToValueAtTime(0, t + d); v.s.stop(t + d + 0.1); } catch (e) {} }
   }
   window.Mandala = Mandala;

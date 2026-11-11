@@ -1,5 +1,9 @@
-Satie – Gnossienne No. 1 (zongora: GregorQuendel), Pixabay, azonosító: 196199 – a mű (Erik Satie, 1890) közkincs; a felvétel a Pixabay licence alatt
-Soft Harp for Relaxation (KonstantinPazuzuStudio), Pixabay, azonosító: 482713
-Moonrise – soft piano, calm and peaceful music (Clavier-Music), Pixabay, azonosító: 305862
-Licenc: Pixabay Content License – https://pixabay.com/service/license-summary/
-Felhasználás: a MANDALA háttérzenéje (beépítve, feldolgozva).
+MANDALA háttérzenék – Pixabay Content License (https://pixabay.com/service/license-summary/), letöltő: andrasbanky
+01 Ancient Ritual Flame – joyinsound – 386048 (licenctanúsítvány: 01-ancient-ritual-flame-licenc.txt)
+02 Dreamcatcher – drmseq – 544492
+03 Ritual Ambient Folk Instrumental 01 – alanajordan – 478013
+04 Ritual Ambient Folk Instrumental 02 – alanajordan – 478012
+05 Ritual of the Ancients (cinematic) – freefunart – 517862
+06 Slow Morning Ritual – alex-morgan – 537463 (licenctanúsítvány: 06-slow-morning-ritual-licenc.txt)
+07 Whirling Silence (immersive sufi ritual) – emand_edroff – 532712
+Feldolgozva: monó, 32 kHz (kisebb memória a telefonon).
