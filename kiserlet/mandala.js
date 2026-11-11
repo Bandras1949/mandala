@@ -111,7 +111,7 @@
       const need = Math.min(3600, Math.ceil(2 * (Rr / 0.9 + 40)));
       const key = tl.width + '|' + need + '|' + c.pat.src + c.pair;
       if (this.key !== key) { this.key = key; const S = this.src; S.width = S.height = need; const s = S.getContext('2d'); s.fillStyle = s.createPattern(tl, 'repeat'); s.fillRect(0, 0, need, need); }
-      const KR = P['mandalaKör'] === true ? this.korGeo(P, W, H) : null; const zk = KR ? KR.k : 1;
+      const KR = P['mandalaKör'] === true ? this.korGeo(P, W, H) : null; const zk = (KR ? KR.k : 1) * Math.max(0.2, num(P['mandalaNagyítás'], 100) / 100);
       const S = this.src, n = c.mir, a = Math.PI * 2 / (n || 1), cx = W / 2, cy = H / 2, ang = this.t * spin * 0.025 * c.dir + (KR ? KR.rot * c.dir : 0);
       if (!n) { x.save(); x.translate(cx, cy); x.scale(zoom * zk, zoom * zk); x.rotate(ang); x.drawImage(S, -S.width / 2, -S.height / 2); x.restore(); }
       for (let i = 0; n && i < n; i++) {

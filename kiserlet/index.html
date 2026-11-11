@@ -13,6 +13,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 #cim{position:fixed;inset:0;background:var(--ink);color:var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vh;cursor:pointer;z-index:5;transition:opacity 1.5s}
 #cim h1{margin:0;font:600 clamp(36px,8vw,90px) Cinzel,Georgia,serif;letter-spacing:.14em}
 #cim p.ind{margin-top:14vh;font-size:clamp(16px,2vw,22px);opacity:.75}
+#cim p.al{white-space:nowrap;font-size:min(26px,4.6vw);padding:0 3vw}
 #cim p{margin:0;font-style:italic;font-size:clamp(17px,2.4vw,26px);color:var(--ivory);text-align:center;padding:0 6vw}
 #gomb{position:fixed;right:calc(env(safe-area-inset-right) + 14px);bottom:calc(env(safe-area-inset-bottom) + 14px);width:46px;height:46px;border-radius:50%;border:1px solid rgba(212,175,55,.6);background:rgba(0,0,0,.55);color:var(--gold);font-size:22px;cursor:pointer;z-index:10}
 #allapot{position:fixed;left:calc(env(safe-area-inset-left) + 14px);top:calc(env(safe-area-inset-top) + 12px);color:rgba(242,234,216,.75);font:italic 16px 'Cormorant Garamond',Georgia,serif;z-index:10;pointer-events:none;text-shadow:0 0 6px #000}
@@ -36,44 +37,46 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 </head>
 <body>
 <canvas id="cv"></canvas>
-<div id="cim"><h1>MANDALA</h1><p>Ha együtt tudsz velem lélegezni, meglátod, lelassulsz.</p><p class="ind">Koppints az indításhoz</p></div>
+<div id="cim"><h1>MANDALA</h1><p class="al">Lélegezz együtt velem. Két perc, és lelassulsz.</p><p class="ind">Koppints az indításhoz</p></div>
 <div id="allapot"></div>
 <div id="legzes"><b></b><i></i></div>
 <button id="gomb" aria-label="Beállítások">⚙</button>
 <div id="panel"></div>
-<script src="./mandala.js?v=5"></script>
+<script src="./mandala.js?v=7"></script>
 <script>
 (function () {
-  const KEY = 'mandala-kiserlet-2';
+  const KEY = 'mandala-kiserlet-3';
   // [kulcs, felirat, típus, alap, (min, max, lépés | opciók), egység]
   const OPT = [
     ['h', 'A kör'],
     ['körMéret', 'Kör nyugalomban (a rövidebb oldal %-a)', 'r', 50, 20, 95, 1, '%'],
     ['körMax', 'Kör kitágulva (a rövidebb oldal %-a)', 'r', 94, 30, 100, 1, '%'],
     ['körKitölt', 'Kitágulva kitölti a képernyőt', 'c', false],
-    ['körPerem', 'Vékony arany perem', 'c', false],
+    ['körPerem', 'Vékony perem (a minta színében)', 'c', false],
     ['h', 'A légzés'],
     ['körBe', 'Belégzés', 'r', 6, 2, 15, 0.5, ' mp'],
-    ['körBent', 'Benntartás', 'r', 4, 0, 15, 0.5, ' mp'],
-    ['körKi', 'Kilégzés', 'r', 8, 2, 20, 0.5, ' mp'],
+    ['körBent', 'Benntartás', 'r', 3, 0, 15, 0.5, ' mp'],
+    ['körKi', 'Kilégzés', 'r', 6, 2, 20, 0.5, ' mp'],
     ['körKint', 'Kinntartás', 'r', 2, 0, 15, 0.5, ' mp'],
     ['felirat', 'Légzésfeliratok', 'c', true],
-    ['szamlalo', 'Visszaszámlálás a felirat alatt', 'c', false],
+    ['szamlalo', 'Visszaszámlálás a felirat alatt', 'c', true],
     ['h', 'Feloldódás és újjászületés'],
     ['körVáltásMin', 'Váltás legkorábban (lélegzet)', 'r', 2, 1, 6, 1, ''],
     ['körVáltásMax', 'Váltás legkésőbb (lélegzet)', 'r', 4, 1, 8, 1, ''],
-    ['körHalálMp', 'Összehúzódás pontig', 'r', 7, 2, 20, 0.5, ' mp'],
-    ['körÜresMp', 'Üresség', 'r', 2, 0, 8, 0.5, ' mp'],
-    ['körSzületésMp', 'Újjászületés', 'r', 8, 2, 20, 0.5, ' mp'],
-    ['körSpirál', 'Spirálos csavarodás (fordulat)', 'r', 1.2, 0, 3, 0.1, ''],
+    ['körHalálMp', 'Ponttá zsugorodás időtartama', 'r', 7, 2, 20, 0.5, ' mp'],
+    ['körÜresMp', 'Üresség időtartama', 'r', 2, 0, 8, 0.5, ' mp'],
+    ['körSzületésMp', 'Újjászületés időtartama', 'r', 8, 2, 20, 0.5, ' mp'],
+    ['körSpirál', 'Csavarodás (fordulat)', 'r', 1.2, 0, 3, 0.1, ''],
     ['körHomok', 'Pergő homok a peremen', 'c', true],
     ['körÜtés', 'Ütés a pontnál (hangerő)', 'r', 60, 0, 100, 5, '%'],
     ['körCsakEgyszer', 'Ingyenes mód: spirál csak egyszer', 'c', false],
     ['h', 'A minta'],
-    ['mandalaForgás', 'Forgás sebessége', 'r', 0.6, 0, 2, 0.1, ''],
-    ['mandalaLélegzés', 'Kis lélegzés a mintán belül', 'c', false],
+    ['mandalaForgás', 'Minta áramlása (belső forgás)', 'r', 1.2, 0, 2, 0.1, ''],
+    ['mandalaNagyítás', 'Minta nagyítása (részletesség)', 'r', 100, 40, 160, 5, '%'],
+    ['mandalaLélegzés', 'Kis lélegzés a mintán belül', 'c', true],
     ['mandalaSzín', 'Színpár', 's', 'váltakozó', ['váltakozó', 'arany–fekete', 'arany–éjkék', 'ezüst–fekete', 'elefántcsont–bordó']],
-    ['mandalaTükör', 'Tükrözés', 's', 'váltakozó', ['váltakozó', '6', '8', '12', 'nincs']],
+    ['mintak', 'Minták', 's', 'mind', ['mind', 'a 4 fekete', 'a 3 új (AD-07–09)']],
+    ['mandalaTükör', 'Tükrözés', 's', '12', ['váltakozó', '6', '8', '12', 'nincs']],
     ['zene', 'Zene', 's', 'sorban', ['sorban', 'Ancient Ritual Flame', 'Dreamcatcher', 'Ritual Ambient Folk 1', 'Ritual Ambient Folk 2', 'Ritual of the Ancients', 'Slow Morning Ritual', 'Whirling Silence', 'nincs']],
   ];
   const DEF = {}; OPT.forEach(o => { if (o[0] !== 'h') DEF[o[0]] = o[3]; });
@@ -81,7 +84,9 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
   const P = () => Object.assign({}, S, { mandalaKör: true, mandalaMinta: 'véletlen', mandalaVáltás: false, mandalaSöprés: false, mandalaZene: S.zene === 'sorban' ? 'váltakozó' : S.zene === 'nincs' ? 'ki' : S.zene, mandalaHangerő: 70 });
   let cur = P();
-  const pats = [['AD-01f', 480], ['AD-03f', 420], ['AD-04f', 480], ['AD-05f', 520]].map(([n, tile]) => ({ src: 'mintak/' + n + '.png', tile, name: n }));
+  const FEK = [['AD-01f', 480], ['AD-03f', 420], ['AD-04f', 480], ['AD-05f', 520]], UJ = [['AD-07', 420], ['AD-08', 420], ['AD-09', 420]];
+  const mk = a => a.map(([n, tile]) => ({ src: 'mintak/' + n + '.png', tile, name: n })), PATS = { 'mind': mk(FEK.concat(UJ)), 'a 4 fekete': mk(FEK), 'a 3 új (AD-07–09)': mk(UJ) };
+  let pats = PATS[S.mintak] || PATS.mind;
   let started = false;
   const mn = new window.Mandala(document.getElementById('cv'), () => ({ want: started, paused: false, P: cur, pats }));
 
@@ -103,12 +108,12 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
     el.addEventListener('input', () => { S[k] = o[2] === 'c' ? el.checked : o[2] === 'r' ? +el.value : el.value;
       if (k === 'körVáltásMin' && S.körVáltásMax < S.körVáltásMin) S.körVáltásMax = S.körVáltásMin;
       if (k === 'körVáltásMax' && S.körVáltásMin > S.körVáltásMax) S.körVáltásMin = S.körVáltásMax;
-      cur = P(); save(); show(); }); });
+      cur = P(); pats = PATS[S.mintak] || PATS.mind; save(); show(); }); });
   const stopP = e => e.stopPropagation();
   ['pointerdown', 'pointerup', 'click'].forEach(ev => { pan.addEventListener(ev, stopP); document.getElementById('gomb').addEventListener(ev, stopP); });
   document.getElementById('gomb').addEventListener('click', () => pan.classList.toggle('on'));
   document.getElementById('most').addEventListener('click', () => mn.korNow());
-  document.getElementById('alap').addEventListener('click', () => { S = Object.assign({}, DEF); cur = P(); save(); show(); });
+  document.getElementById('alap').addEventListener('click', () => { S = Object.assign({}, DEF); cur = P(); pats = PATS[S.mintak] || PATS.mind; save(); show(); });
   document.getElementById('szovegGomb').addEventListener('click', () => { const t = document.getElementById('szoveg'); t.style.display = 'block'; t.value = OPT.filter(o => o[0] !== 'h').map(o => o[1] + ': ' + (o[2] === 'c' ? (S[o[0]] ? 'igen' : 'nem') : S[o[0]] + unit(o[0]))).join('\n'); t.select(); });
 
   // állapotkijelzés: hol tart a ciklus
