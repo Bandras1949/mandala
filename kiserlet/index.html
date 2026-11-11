@@ -42,10 +42,10 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 <div id="legzes"><b></b><i></i></div>
 <button id="gomb" aria-label="Beállítások">⚙</button>
 <div id="panel"></div>
-<script src="./mandala.js?v=7"></script>
+<script src="./mandala.js?v=8"></script>
 <script>
 (function () {
-  const KEY = 'mandala-kiserlet-3';
+  const KEY = 'mandala-kiserlet-4';
   // [kulcs, felirat, típus, alap, (min, max, lépés | opciók), egység]
   const OPT = [
     ['h', 'A kör'],
@@ -72,10 +72,10 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
     ['körCsakEgyszer', 'Ingyenes mód: spirál csak egyszer', 'c', false],
     ['h', 'A minta'],
     ['mandalaForgás', 'Minta áramlása (belső forgás)', 'r', 1.2, 0, 2, 0.1, ''],
-    ['mandalaNagyítás', 'Minta nagyítása (részletesség)', 'r', 100, 40, 160, 5, '%'],
+    ['mandalaNagyítás', 'Minta nagyítása (részletesség)', 'r', 65, 40, 160, 5, '%'],
     ['mandalaLélegzés', 'Kis lélegzés a mintán belül', 'c', true],
     ['mandalaSzín', 'Színpár', 's', 'váltakozó', ['váltakozó', 'arany–fekete', 'arany–éjkék', 'ezüst–fekete', 'elefántcsont–bordó']],
-    ['mintak', 'Minták', 's', 'mind', ['mind', 'a 4 fekete', 'a 3 új (AD-07–09)']],
+    ['mintak', 'Minták', 's', 'mind', ['mind', 'a 4 fekete', 'a 3 új (AD-07–09)', 'régi vonalas (AD-01–06)']],
     ['mandalaTükör', 'Tükrözés', 's', '12', ['váltakozó', '6', '8', '12', 'nincs']],
     ['zene', 'Zene', 's', 'sorban', ['sorban', 'Ancient Ritual Flame', 'Dreamcatcher', 'Ritual Ambient Folk 1', 'Ritual Ambient Folk 2', 'Ritual of the Ancients', 'Slow Morning Ritual', 'Whirling Silence', 'nincs']],
   ];
@@ -85,7 +85,8 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   const P = () => Object.assign({}, S, { mandalaKör: true, mandalaMinta: 'véletlen', mandalaVáltás: false, mandalaSöprés: false, mandalaZene: S.zene === 'sorban' ? 'váltakozó' : S.zene === 'nincs' ? 'ki' : S.zene, mandalaHangerő: 70 });
   let cur = P();
   const FEK = [['AD-01f', 480], ['AD-03f', 420], ['AD-04f', 480], ['AD-05f', 520]], UJ = [['AD-07', 420], ['AD-08', 420], ['AD-09', 420]];
-  const mk = a => a.map(([n, tile]) => ({ src: 'mintak/' + n + '.png', tile, name: n })), PATS = { 'mind': mk(FEK.concat(UJ)), 'a 4 fekete': mk(FEK), 'a 3 új (AD-07–09)': mk(UJ) };
+  const REG = [['AD-01', 480], ['AD-02', 420], ['AD-03', 420], ['AD-04', 480], ['AD-05', 520], ['AD-06', 420]];
+  const mk = a => a.map(([n, tile]) => ({ src: 'mintak/' + n + '.png', tile, name: n })), PATS = { 'mind': mk(FEK.concat(UJ, REG)), 'a 4 fekete': mk(FEK), 'a 3 új (AD-07–09)': mk(UJ), 'régi vonalas (AD-01–06)': mk(REG) };
   let pats = PATS[S.mintak] || PATS.mind;
   let started = false;
   const mn = new window.Mandala(document.getElementById('cv'), () => ({ want: started, paused: false, P: cur, pats }));
@@ -93,7 +94,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   // panel
   const pan = document.getElementById('panel'); let h = '';
   OPT.forEach(o => {
-    if (o[0] === 'h') { h += (h ? '<div class="hr"></div>' : '') + `<h2>${o[1]}</h2>`; return; }
+    if (o[0] === 'h') { h += (h ? '<div class="hr"></div>' : '<div style="font-size:13px;color:#C9B37A;margin-bottom:6px">változat: 11-11 · 13 minta</div>') + `<h2>${o[1]}</h2>`; return; }
     const [k, l, t] = o;
     if (t === 'r') h += `<div class="sor"><label for="${k}">${l}</label><output id="o-${k}"></output><input type="range" id="${k}" min="${o[4]}" max="${o[5]}" step="${o[6]}"></div>`;
     else if (t === 'c') h += `<div class="sor"><label for="${k}">${l}</label><input type="checkbox" id="${k}"></div>`;

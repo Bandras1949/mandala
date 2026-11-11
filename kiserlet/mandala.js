@@ -141,7 +141,7 @@
           else { b.ph = 'die'; b.t = 0; b.deaths++; this.grains = []; }
         }
       } else if (b.ph === 'die' && b.t >= D) { b.ph = 'empty'; b.t = 0; this.korBowl(P); }
-      else if (b.ph === 'empty' && b.t >= E) { this.choose(P, pats); this.t += 20 + Math.random() * 60; b.ph = 'born'; b.t = 0; }
+      else if (b.ph === 'empty' && b.t >= E) { b.bgFrom = this.cur ? PAIRS[this.cur.pair][1] : null; this.choose(P, pats); this.t += 20 + Math.random() * 60; b.ph = 'born'; b.t = 0; }
       else if (b.ph === 'born' && b.t >= B) { b.ph = 'breathe'; b.t = 0; b.n = 0; if (this.onReborn && b.deaths) try { this.onReborn(); } catch (e) {} }
     }
     korLeg(P) {   // a légzés négy szakasza (mp): belégzés, benntartás, kilégzés, kinntartás
@@ -169,7 +169,14 @@
       const e = eio(Math.min(1, b.t / B)); return { R: r0 * e, rot: -turns * (1 - e) * (1 - e), k: 0.55 + 0.45 * e, rf, r0, ph: b.ph, e };
     }
     korMask(dt, g, W, H, dpr, P) {
-      const x = this.cv.getContext('2d'), cx = W / 2, cy = H / 2, R = g.R, rd = Math.hypot(W, H) / 2, bg = PAIRS[this.cur.pair][1], ink = PAIRS[this.cur.pair][0], [a, b, c] = hex(bg);
+      const x = this.cv.getContext('2d'), cx = W / 2, cy = H / 2, R = g.R, rd = Math.hypot(W, H) / 2, ink = PAIRS[this.cur.pair][0];
+      let bg = PAIRS[this.cur.pair][1]; const kb = this.kb;
+      if (kb && kb.bgFrom && (g.ph === 'born' || g.ph === 'breathe')) {   // újjászületéskor a háttér a minta kibomlásával együtt mosódik át az új színbe
+        const e = g.ph === 'born' ? Math.min(1, g.e || 0) : 1, f = hex(kb.bgFrom), t = hex(bg);
+        bg = '#' + f.map((v, i) => Math.round(v + (t[i] - v) * e).toString(16).padStart(2, '0')).join('');
+        if (e >= 1) kb.bgFrom = null;
+      }
+      const [a, b, c] = hex(bg);
       x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1;
       if (R < rd) {
         x.fillStyle = bg; x.beginPath(); x.rect(0, 0, W, H); x.arc(cx, cy, Math.max(0, R), 0, Math.PI * 2, true); x.fill('evenodd');
