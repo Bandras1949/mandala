@@ -312,7 +312,7 @@
       const want = z === 'váltakozó' ? null : z;
       if (this.voice && want && this.voice.name !== want) { this.endVoice(this.voice, ac.currentTime, XF); this.voice = null; }
       const now = ac.currentTime;
-      const nextName = want || (this.voice ? ORDER[(ORDER.indexOf(this.voice.name) + 1) % ORDER.length] : ORDER[0]);
+      const nextName = want || (this.voice ? ORDER[(ORDER.indexOf(this.voice.name) + 1) % ORDER.length] : (this.first ??= ORDER[Math.floor(Math.random() * ORDER.length)]));   // az első zene véletlenszerű, onnan körkörösen sorban
       if (!this.voice || now >= this.voice.end - 90) this.need(nextName);   // a következő zene másfél perccel előre töltődik
       if (!this.voice || now >= this.voice.end - XF) {
         const name = nextName, buf = this.bufs[name]; if (!buf) return; this.trim([name, this.voice && this.voice.name]);
