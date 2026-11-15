@@ -146,7 +146,8 @@
     }
     korLeg(P) {   // a légzés négy szakasza (mp): belégzés, benntartás, kilégzés, kinntartás
       const be = Math.max(1, num(P['körBe'], 6)), bent = Math.max(0, num(P['körBent'], 4)), ki = Math.max(1, num(P['körKi'], 8)), kint = Math.max(0, num(P['körKint'], 2));
-      return { be, bent, ki, kint, L: be + bent + ki + kint };
+      const prep = [be, bent, ki, kint].filter(x => x > 0).length;   // szakaszonként 1 mp felkészülés a felirat után
+      return { be, bent, ki, kint, L: be + bent + ki + kint + prep };
     }
     korNow() { const b = this.kb; if (b) b.force = true; }
     korGeo(P, W, H) {
@@ -156,11 +157,21 @@
       const D = Math.max(1, num(P['körHalálMp'], 7)), B = Math.max(1, num(P['körSzületésMp'], 8));
       this.korLbl = ''; this.korMarad = 0;
       if (b.ph === 'breathe') {
-        const g = this.korLeg(P), t = b.t; let R, lb, rem;
-        if (t < g.be) { R = r0 + (rf - r0) * eio(t / g.be); lb = 'be'; rem = g.be - t; }
-        else if (t < g.be + g.bent) { R = rf; lb = 'bent'; rem = g.be + g.bent - t; }
-        else if (t < g.be + g.bent + g.ki) { R = rf - (rf - r0) * eio((t - g.be - g.bent) / g.ki); lb = 'ki'; rem = g.be + g.bent + g.ki - t; }   // KILÉGZÉS csak akkor, ha már az egész kör látszik
-        else { R = r0; lb = 'kint'; rem = g.L - t; }
+        // Minden szakasz előtt 1 mp FELKÉSZÜLÉS: a felirat már látszik, a mandala még az előző állapotában áll, szám nincs.
+        // Utána indul a mozgás és a teljes visszaszámlálás (pl. BELÉGZÉS → 1 mp → 6, 5, 4, 3, 2, 1).
+        const g = this.korLeg(P); let t = b.t, R = r0, lb = 'be', rem = -1;
+        const sor = [['be', g.be], ['bent', g.bent], ['ki', g.ki], ['kint', g.kint]];
+        let allas = r0;   // a mandala mérete a szakasz elején
+        for (const [k, d] of sor) {
+          if (d <= 0) continue;
+          if (t < 1) { lb = k; rem = -1; R = allas; break; }   // felkészülés
+          t -= 1;
+          if (t < d) {
+            lb = k; rem = d - t; const e = eio(t / d);
+            R = k === 'be' ? r0 + (rf - r0) * e : k === 'ki' ? rf - (rf - r0) * e : allas; break;
+          }
+          t -= d; allas = k === 'be' ? rf : k === 'ki' ? r0 : allas; R = allas;
+        }
         this.korLbl = lb; this.korMarad = rem;
         return { R, rot: 0, k: 1, rf, r0, ph: b.ph };
       }

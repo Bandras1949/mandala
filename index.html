@@ -83,11 +83,11 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 #ny button{background:transparent;border:1px solid rgba(212,175,55,.4);color:var(--gold);border-radius:8px;padding:6px 12px;font:600 13px Cinzel,Georgia,serif;cursor:pointer;opacity:.8}
 #ny button.on{background:var(--gold);color:var(--ink);opacity:1}
 </style>
-<script>/* ÖNFRISSÍTÉS: induláskor és visszatéréskor megnézi a version.json-t; ha a GitHubon újabb változat van, egyszer újratölt */(function(){var V='2026-11-15-3';function c(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===V)return;var k='frissit-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString())}).catch(function(){})}catch(e){}}c();document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')c()})})();</script>
+<script>/* ÖNFRISSÍTÉS: induláskor és visszatéréskor megnézi a version.json-t; ha a GitHubon újabb változat van, egyszer újratölt */(function(){var V='2026-11-15-4';function c(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===V)return;var k='frissit-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString())}).catch(function(){})}catch(e){}}c();document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')c()})})();</script>
 </head>
 <body>
 <canvas id="cv"></canvas>
-<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="cimAj">Teljes változat és előfizetés →</a><div id="nev" data-t="nev">© Bánky András</div><div id="verzio">v2026-11-15-3</div></div>
+<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="cimAj">Teljes változat és előfizetés →</a><div id="nev" data-t="nev">© Bánky András</div><div id="verzio">v2026-11-15-4</div></div>
 <div id="legzes"><b></b><i></i></div>
 <a id="ajanl" href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="ajanl">Tetszik? A teljes változatban a mandala újra és újra feloldódik és újjászületik →</a>
 <div id="hang"></div>
@@ -107,7 +107,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   <div id="kinn" class="lab" style="display:none"><span data-t="teljes">Teljes változat</span> · <a href="#" id="torol" data-t="torol">kulcs törlése</a></div>
   <div class="lab"><span data-t="masik">Bánky András másik appja:</span> <a id="kal" href="https://bandras1949.github.io/kaleidoszkop/" target="_blank" rel="noopener" data-t="kal">Kaleidoszkóp</a> · <a href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="mindketto">mindkettő együtt</a><br><span data-t="sugo">Koppintás: hang be/ki · dupla koppintás: új minta · 📷: kép megállítása</span></div>
 </div>
-<script src="./mandala.js?v=10"></script>
+<script src="./mandala.js?v=11"></script>
 <script>
 (function () {
   // ---------- teljes változat (licenckulcs) ----------
@@ -227,7 +227,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   (function lg() {
     const l = started && !frozen && eff('felirat') === 'be' ? mn.korLbl || '' : '';
     if (l !== lgLast) { lgLast = l; if (l) { lgB.style.opacity = '0'; setTimeout(() => { if (lgLast === l) { lgB.textContent = t('LG')[l]; lgB.style.opacity = '1'; } }, lgB.textContent ? 250 : 0); } else lgB.style.opacity = '0'; }
-    lgI.textContent = l && eff('szamlalo') === 'be' ? Math.ceil(mn.korMarad || 0) : '';
+    lgI.textContent = l && eff('szamlalo') === 'be' && mn.korMarad > 0 ? Math.ceil(mn.korMarad) : '';   // az előre jelzett felirat alatt még nincs szám
     requestAnimationFrame(lg);
   })();
 
