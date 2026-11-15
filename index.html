@@ -25,6 +25,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 #ind{position:absolute;left:0;right:0;top:67vh;text-align:center;font:italic 500 clamp(16px,1.9vw,24px) 'Cormorant Garamond',Georgia,serif;color:#FFFFFF;opacity:.75}
 #fekvo{position:absolute;left:8vw;right:8vw;top:calc(67vh + clamp(40px,4.5vw,56px));text-align:center;font:italic 500 clamp(15px,1.9vw,22px)/1.35 'Cormorant Garamond',Georgia,serif;color:var(--gold2);opacity:.8;display:none}
 @media (orientation:portrait) and (max-width:820px){#fekvo{display:block}}
+#verzio{position:absolute;right:calc(env(safe-area-inset-right) + 14px);top:calc(env(safe-area-inset-top) + 18px);font:12px system-ui,sans-serif;color:rgba(251,250,247,.45)}   /* verziószám: ebből látszik, melyik változat fut */
 /* nyitókép elrendezése: gép (alap) – álló telefon – fekvő telefon */
 #cim #logo{width:min(21vh,30vw);height:min(21vh,30vw)}
 #cim h1{top:calc(27vh + 19px)}
@@ -85,7 +86,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 </head>
 <body>
 <canvas id="cv"></canvas>
-<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="cimAj">Teljes változat és előfizetés →</a><div id="nev" data-t="nev">© Bánky András</div></div>
+<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="cimAj">Teljes változat és előfizetés →</a><div id="nev" data-t="nev">© Bánky András</div><div id="verzio">v2026-11-15-2</div></div>
 <div id="legzes"><b></b><i></i></div>
 <a id="ajanl" href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="ajanl">Tetszik? A teljes változatban a mandala újra és újra feloldódik és újjászületik →</a>
 <div id="hang"></div>
