@@ -34,6 +34,8 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   #cim #logo{top:calc(env(safe-area-inset-top) + 4vh + 38px);width:min(17vh,30vw);height:min(17vh,30vw)}
   #cim h1{top:calc(25vh + 38px)}
   #al{top:calc(25vh + 38px + clamp(64px,13vw,150px))}
+  #ind{top:58vh}   /* álló telefonon feljebb, hogy alul ne csússzanak egymásra a sorok */
+  #fekvo{top:calc(58vh + clamp(36px,4.5vw,56px))}
 }
 @media (orientation:landscape) and (max-height:500px){
   #cim #logo{top:calc(env(safe-area-inset-top) + 4vh);width:28vh;height:28vh}
@@ -83,11 +85,11 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 #ny button{background:transparent;border:1px solid rgba(212,175,55,.4);color:var(--gold);border-radius:8px;padding:6px 12px;font:600 13px Cinzel,Georgia,serif;cursor:pointer;opacity:.8}
 #ny button.on{background:var(--gold);color:var(--ink);opacity:1}
 </style>
-<script>/* ÖNFRISSÍTÉS: induláskor és visszatéréskor megnézi a version.json-t; ha a GitHubon újabb változat van, egyszer újratölt */(function(){var V='2026-11-15-4';function c(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===V)return;var k='frissit-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString())}).catch(function(){})}catch(e){}}c();document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')c()})})();</script>
+<script>/* ÖNFRISSÍTÉS: induláskor és visszatéréskor megnézi a version.json-t; ha a GitHubon újabb változat van, egyszer újratölt */(function(){var V='2026-11-16-1';function c(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===V)return;var k='frissit-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString())}).catch(function(){})}catch(e){}}c();document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')c()})})();</script>
 </head>
 <body>
 <canvas id="cv"></canvas>
-<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="cimAj">Teljes változat és előfizetés →</a><div id="nev" data-t="nev">© Bánky András</div><div id="verzio">v2026-11-15-4</div></div>
+<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="cimAj">Teljes változat és előfizetés →</a><div id="nev" data-t="nev">© Bánky András</div><div id="verzio">v2026-11-16-1</div></div>
 <div id="legzes"><b></b><i></i></div>
 <a id="ajanl" href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="ajanl">Tetszik? A teljes változatban a mandala újra és újra feloldódik és újjászületik →</a>
 <div id="hang"></div>
