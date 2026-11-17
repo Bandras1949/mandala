@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mandala – breathe with me</title>
+<meta name="description" content="Breathe with the mandala. Two minutes, and you’ll slow down.">
+<meta property="og:title" content="Mandala – breathe with me">
+<meta property="og:description" content="Breathe with the mandala. Two minutes, and you’ll slow down.">
+<meta property="og:image" content="https://bandras1949.github.io/mandala/logo-mandala.png">
+<meta property="og:url" content="https://bandras1949.github.io/mandala/promo.html">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--ivory:#FBFAF7;--gold:#E3C68A}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+#szin{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+#keret{position:relative;height:100%;aspect-ratio:9/16;max-width:100%;overflow:hidden;background:#000}
+#cv{position:absolute;inset:0;width:100%;height:100%}
+.ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;transition:opacity 1.2s ease;box-sizing:border-box}
+#nyit{background:#000;cursor:pointer;justify-content:flex-start;padding-top:22%}
+#nyit img,#zar img{width:29%;max-width:165px;aspect-ratio:1}
+.kerd{position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);font:500 italic min(7vh,38px)/1.25 'Cormorant Garamond',serif;color:var(--ivory)}
+.ind{position:absolute;left:0;right:0;bottom:78px;font:500 italic 19px 'Cormorant Garamond',serif;color:rgba(251,250,247,.6)}
+.nev{position:absolute;bottom:30px;left:0;right:0;font:500 italic 17px 'Cormorant Garamond',serif;color:rgba(251,250,247,.6)}
+#zar{background:#000;opacity:0;pointer-events:none;justify-content:center}
+#zar.on{opacity:1;pointer-events:auto}
+.zar2{font:500 italic min(6.4vh,34px)/1.25 'Cormorant Garamond',serif;color:var(--ivory);margin:26px 36px 0}
+.gomb{margin-top:44px;font:600 22px 'Cormorant Garamond',serif;color:#0f0f0f;background:var(--gold);padding:12px 30px;border-radius:30px;text-decoration:none}
+.link{margin-top:18px;font:500 italic 20px 'Cormorant Garamond',serif;color:rgba(251,250,247,.85)}
+.ujra{margin-top:90px;font:500 italic 17px 'Cormorant Garamond',serif;color:rgba(251,250,247,.6);cursor:pointer;text-decoration:underline}
+/* légzésfeliratok – ugyanúgy, mint az appban */
+#legzes{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 9%);text-align:center;pointer-events:none;z-index:3;color:var(--ivory);text-shadow:0 0 10px #000,0 0 22px #000}
+#legzes b{display:block;font:600 clamp(22px,4.6vh,40px) Cinzel,Georgia,serif;letter-spacing:.3em;padding-left:.3em;transition:opacity 1.2s ease;opacity:0}
+#legzes i{display:block;margin-top:4px;font:italic 500 clamp(18px,3vh,26px) 'Cormorant Garamond',Georgia,serif;opacity:.85;min-height:1.2em}
+#info{position:absolute;left:8px;bottom:6px;font:12px system-ui,sans-serif;color:rgba(255,255,255,.55);z-index:5;pointer-events:none}
+</style></head><body>
+<div id="szin"><div id="keret">
+<canvas id="cv"></canvas>
+<div id="legzes"><b></b><i></i></div>
+<div class="ov" id="nyit"><img src="logo-mandala.png" alt=""><div class="kerd" data-t="kerd">Breathe with me.</div><div class="ind" id="ind" data-t="ind">Tap to begin ♪</div><div class="nev" data-t="nev">© András Bánky</div></div>
+<div class="ov" id="zar"><img src="logo-mandala.png" alt=""><div class="zar2" data-t="zar2">Two minutes, and you’ll slow down.</div>
+<a class="gomb" href="https://bandras1949.github.io/mandala/" target="_blank" rel="noopener" data-t="gomb">Try it free</a>
+<div class="link">bandras1949.github.io/mandala</div><div class="ujra" id="ujra" data-t="ujra">again</div><div class="nev" data-t="nev">© András Bánky</div></div>
+<div id="info" style="display:none"></div>
+</div></div>
+<script>
+// nyelv: alapból angol; ?lang=hu → magyar
+const LANG = new URLSearchParams(location.search).get('lang') === 'hu' ? 'hu' : 'en';
+const SZOV = {
+  en: { LG: { be: 'INHALE', bent: 'HOLD', ki: 'EXHALE', kint: 'PAUSE' } },
+  hu: { kerd: 'Lélegezz velem.', ind: 'Koppints az indításhoz ♪', zar2: 'Két perc, és lelassulsz.', gomb: 'Próbáld ki ingyen', ujra: 'újra', nev: '© Bánky András', LG: { be: 'BELÉGZÉS', bent: 'BENNTART', ki: 'KILÉGZÉS', kint: 'KINNTART' } } };
+addEventListener('DOMContentLoaded', () => { if (LANG === 'hu') document.querySelectorAll('[data-t]').forEach(e => { e.textContent = SZOV.hu[e.dataset.t]; }); document.documentElement.lang = LANG; });
+</script>
+<script src="mandala.js?v=11"></script>
+<script>
+// MANDALA PROMÓ – nyitókép → születés → két teljes lélegzet feliratokkal → feloldódás → újjászületés → zárókép (álló marad).
+const LG = SZOV[LANG].LG;
+const P = {
+  mandalaKör: true, mandalaMinta: 'véletlen', mandalaVáltás: false, mandalaSöprés: false,
+  mandalaSzín: 'váltakozó', mandalaTükör: '12', mandalaForgás: 1.2, mandalaLélegzés: true, mandalaNagyítás: 65,
+  körMéret: 50, körMax: 94, körKitölt: false, körPerem: false,
+  körBe: 6, körBent: 3, körKi: 6, körKint: 2,
+  körVáltásMin: 2, körVáltásMax: 2,   // pontosan két lélegzet után jön a feloldódás
+  körHalálMp: 7, körÜresMp: 2, körSzületésMp: 8, körSpirál: 1.2, körHomok: true, körÜtés: 60, körCsakEgyszer: false,
+  mandalaZene: 'Dreamcatcher', mandalaHangerő: 70 };
+const FEK = [['AD-01f', 480], ['AD-03f', 420], ['AD-04f', 480], ['AD-05f', 520]];
+const pats = FEK.map(([n, tile]) => ({ src: 'mintak/' + n + '.png', tile, name: n }));
+let started = false;
+const mn = new window.Mandala(document.getElementById('cv'), () => ({ want: started, paused: false, P, pats }));
+const lgB = document.querySelector('#legzes b'), lgI = document.querySelector('#legzes i'), info = document.getElementById('info');
+let lgLast = '', vege = false, t0 = 0;
+(function felirat() {
+  const l = started && !vege && mn.kb && mn.kb.ph === 'breathe' ? mn.korLbl || '' : '';
+  if (l !== lgLast) { lgLast = l; if (l) { lgB.style.opacity = '0'; setTimeout(() => { if (lgLast === l) { lgB.textContent = LG[l]; lgB.style.opacity = '1'; } }, lgB.textContent ? 250 : 0); } else lgB.style.opacity = '0'; }
+  lgI.textContent = l && mn.korMarad > 0 ? Math.ceil(mn.korMarad) : '';
+  if (started) { const s = (performance.now() - t0) / 1000; info.textContent = `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')} · ${mn.kb ? mn.kb.ph : '–'}`; }
+  requestAnimationFrame(felirat);
+})();
+// újjászületés után még 4 mp lélegzik, aztán jön a zárókép (a zene lassan elhalkul)
+mn.onReborn = () => { setTimeout(() => { vege = true; document.getElementById('zar').classList.add('on'); started = false; mn.setWant(false); }, 4000); };
+document.getElementById('nyit').addEventListener('pointerup', () => {
+  if (started) return; started = true; t0 = performance.now();
+  document.getElementById('ind').style.visibility = 'hidden';
+  mn.start();   // a zene a koppintáson belül indul (telefonon ez kell)
+  document.getElementById('nyit').style.opacity = 0; document.getElementById('nyit').style.pointerEvents = 'none';
+});
+document.getElementById('ujra').addEventListener('click', () => location.reload());
+</script></body></html>
