@@ -45,6 +45,10 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 }
 #nev{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 5vh);text-align:center;font:500 clamp(18px,2.4vw,40px) 'Cormorant Garamond',Georgia,serif;color:var(--ivory)}
 #cim .ajlink{position:absolute;left:8vw;right:8vw;bottom:calc(env(safe-area-inset-bottom) + 5vh + clamp(34px,4vw,56px));text-align:center;font:italic 500 clamp(16px,2vw,22px) 'Cormorant Garamond',Georgia,serif;color:var(--gold);text-decoration:underline;text-underline-offset:4px}
+#bolcs{position:fixed;left:9vw;right:9vw;top:50%;transform:translateY(-50%);text-align:center;pointer-events:none;z-index:3;opacity:0;transition:opacity 1.6s ease;color:var(--ivory);text-shadow:0 0 12px #000,0 0 28px #000}
+#bolcs.on{opacity:1}
+#bolcs p{margin:0;font:italic 500 clamp(24px,3.6vw,40px)/1.3 'Cormorant Garamond',Georgia,serif}
+#bolcs small{display:block;margin-top:14px;font:600 clamp(11px,1.3vw,14px) Cinzel,Georgia,serif;letter-spacing:.18em;opacity:.6}
 #legzes{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 5vh);text-align:center;pointer-events:none;z-index:3;color:var(--ivory);text-shadow:0 0 10px #000,0 0 22px #000}
 #legzes b{display:block;font:600 clamp(22px,4.2vw,44px) Cinzel,Georgia,serif;letter-spacing:.3em;padding-left:.3em;transition:opacity 1.2s ease;opacity:0}
 #legzes i{display:block;margin-top:4px;font:italic 500 clamp(16px,2.2vw,24px) 'Cormorant Garamond',Georgia,serif;opacity:.8;min-height:1.2em}
@@ -85,12 +89,13 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 #ny button{background:transparent;border:1px solid rgba(212,175,55,.4);color:var(--gold);border-radius:8px;padding:6px 12px;font:600 13px Cinzel,Georgia,serif;cursor:pointer;opacity:.8}
 #ny button.on{background:var(--gold);color:var(--ink);opacity:1}
 </style>
-<script>/* ÖNFRISSÍTÉS: induláskor és visszatéréskor megnézi a version.json-t; ha a GitHubon újabb változat van, egyszer újratölt */(function(){var V='2026-11-16-1';function c(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===V)return;var k='frissit-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString())}).catch(function(){})}catch(e){}}c();document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')c()})})();</script>
+<script>/* ÖNFRISSÍTÉS: induláskor és visszatéréskor megnézi a version.json-t; ha a GitHubon újabb változat van, egyszer újratölt */(function(){var V='2026-11-19-1';function c(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===V)return;var k='frissit-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString())}).catch(function(){})}catch(e){}}c();document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')c()})})();</script>
 </head>
 <body>
 <canvas id="cv"></canvas>
-<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="cimAj">Teljes változat és előfizetés →</a><div id="nev" data-t="nev">© Bánky András</div><div id="verzio">v2026-11-16-1</div></div>
+<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="cimAj">Teljes változat és előfizetés →</a><div id="nev" data-t="nev">© Bánky András</div><div id="verzio">v2026-11-19-1</div></div>
 <div id="legzes"><b></b><i></i></div>
+<div id="bolcs"><p></p><small></small></div>
 <a id="ajanl" href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="ajanl">Tetszik? A teljes változatban a mandala újra és újra feloldódik és újjászületik →</a>
 <div id="hang"></div>
 <div id="foto" class="kgomb" title="Kép megállítása" data-ti="tFoto">📷</div>
@@ -109,7 +114,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   <div id="kinn" class="lab" style="display:none"><span data-t="teljes">Teljes változat</span> · <a href="#" id="torol" data-t="torol">kulcs törlése</a></div>
   <div class="lab"><span data-t="masik">Bánky András másik appja:</span> <a id="kal" href="https://bandras1949.github.io/kaleidoszkop/" target="_blank" rel="noopener" data-t="kal">Kaleidoszkóp</a> · <a href="https://bandras1949.github.io/appok/" target="_blank" rel="noopener" data-t="mindketto">mindkettő együtt</a><br><span data-t="sugo">Koppintás: hang be/ki · dupla koppintás: új minta · 📷: kép megállítása</span></div>
 </div>
-<script src="./mandala.js?v=11"></script>
+<script src="./mandala.js?v=12"></script>
 <script>
 (function () {
   // ---------- teljes változat (licenckulcs) ----------
@@ -128,7 +133,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
       masik: 'Bánky András másik appja:', kal: 'Kaleidoszkóp', mindketto: 'mindkettő együtt', sugo: 'Koppintás: hang be/ki · dupla koppintás: új minta · 📷: kép megállítása',
       mp: ' mp', feloldodas: 'Feloldódás', ujMinta: 'Új minta', hangBe: 'Hang be', hangKi: 'Hang ki · koppintás: vissza',
       LG: { be: 'BELÉGZÉS', bent: 'BENNTART', ki: 'KILÉGZÉS', kint: 'KINNTART' },
-      O: { légzés: 'A légzés', mandala: 'A mandala', be: 'Belégzés', bent: 'Benntartás', ki: 'Kilégzés', kint: 'Kinntartás', felirat: 'Légzésfeliratok', szamlalo: 'Visszaszámlálás', szín: 'Színpár', tükör: 'Tükör', minták: 'Minták', zene: 'Zene' },
+      O: { mondat: 'Bölcs mondatok', légzés: 'A légzés', mandala: 'A mandala', be: 'Belégzés', bent: 'Benntartás', ki: 'Kilégzés', kint: 'Kinntartás', felirat: 'Légzésfeliratok', szamlalo: 'Visszaszámlálás', szín: 'Színpár', tükör: 'Tükör', minták: 'Minták', zene: 'Zene' },
       V: { sorban: 'sorban, véletlen kezdéssel' } },
     en: { cim: 'MANDALA · © András Bánky', nev: '© András Bánky', al: 'Breathe with me. Two minutes, and you’ll slow down.', ind: 'Tap to begin',
       fekvo: 'Lovely in landscape too – if it doesn’t turn, switch off rotation lock.', cimAj: 'Full version & subscription →',
@@ -139,7 +144,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
       masik: 'Another app by András Bánky:', kal: 'Kaleidoscope', mindketto: 'both together', sugo: 'Tap: sound on/off · double tap: new pattern · 📷: freeze image',
       mp: ' s', feloldodas: 'Dissolving', ujMinta: 'New pattern', hangBe: 'Sound on', hangKi: 'Sound off · tap to restore',
       LG: { be: 'INHALE', bent: 'HOLD', ki: 'EXHALE', kint: 'PAUSE' },
-      O: { légzés: 'Breathing', mandala: 'The mandala', be: 'Inhale', bent: 'Hold', ki: 'Exhale', kint: 'Pause', felirat: 'Breath labels', szamlalo: 'Countdown', szín: 'Colour pair', tükör: 'Mirrors', minták: 'Patterns', zene: 'Music' },
+      O: { mondat: 'Words of wisdom', légzés: 'Breathing', mandala: 'The mandala', be: 'Inhale', bent: 'Hold', ki: 'Exhale', kint: 'Pause', felirat: 'Breath labels', szamlalo: 'Countdown', szín: 'Colour pair', tükör: 'Mirrors', minták: 'Patterns', zene: 'Music' },
       V: { be: 'on', ki: 'off', 'váltakozó': 'alternating', 'arany–fekete': 'gold–black', 'arany–éjkék': 'gold–midnight blue', 'ezüst–fekete': 'silver–black', 'elefántcsont–bordó': 'ivory–burgundy',
         mind: 'all', fekete: 'black', vonalas: 'line', sorban: 'random start, in order', nincs: 'none' } } };
   const pickLang = () => {
@@ -170,8 +175,9 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
     ['tükör', 'Tükör', 's', [['6', '6'], ['8', '8'], ['12', '12'], ['váltakozó', 'váltakozó']]],
     ['minták', 'Minták', 's', [['mind', 'mind'], ['fekete', 'fekete'], ['vonalas', 'vonalas']]],
     ['zene', 'Zene', 'z', ZENEK],
+    ['mondat', 'Bölcs mondatok', 's', [['be', 'be'], ['ki', 'ki']], true],
   ];
-  const DEF = { be: 6, bent: 3, ki: 6, kint: 2, felirat: 'be', szamlalo: 'be', szín: 'váltakozó', tükör: '12', minták: 'mind', zene: 'sorban' };
+  const DEF = { be: 6, bent: 3, ki: 6, kint: 2, felirat: 'be', szamlalo: 'be', szín: 'váltakozó', tükör: '12', minták: 'mind', zene: 'sorban', mondat: 'be' };
   const KEY = 'mandala-beallitas-2';
   let S = { ...DEF };
   try { const o = JSON.parse(store.get(KEY) || '{}'); for (const k in DEF) if (typeof o[k] === typeof DEF[k]) S[k] = o[k]; } catch (e) {}
@@ -274,6 +280,26 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   const aj = $('ajanl');
   const ajanl = () => { if (premium || frozen) return; aj.classList.add('on'); clearTimeout(aj.t); aj.t = setTimeout(() => aj.classList.remove('on'), 10000); };
   mn.onReborn = ajanl;
+  // BÖLCS MONDATOK: a feloldódás utáni csendben (minden második alkalommal, az elsővel kezdve) egy mondat tűnik elő Bánky András
+  // TANULSÁGOK-sorozatából, aztán elhalványul, és csak utána születik újjá a mandala. A mondatok angolul vannak, mint a könyvek.
+  const TAO = 'THE WISDOM OF THE TAO', ZEN = 'THE WISDOM OF ZEN';
+  const MONDAT = [['All things return to their roots.', TAO], ['Nothing is softer than water, yet it wears away stone.', TAO], ['Whoever knows what is enough is rich.', TAO],
+    ['Things ripen in their own time.', TAO], ['Calmness is the master of restlessness.', TAO], ['Know when to stop.', TAO], ['Dampen your light; merge with the world.', TAO],
+    ['Reality is a matter of perspective.', TAO], ['Nothing is yours.', ZEN], ['Empty the cup, so it can be filled.', ZEN], ['Don’t fight the current. Recognize that you are the wave.', ZEN],
+    ['The light enters through the crack.', ZEN], ['What moves outside is what stirs within.', ZEN], ['Bring me your mind, and I will put it at ease.', ZEN],
+    ['When I eat, I eat. When I sleep, I sleep.', ZEN], ['The present is the only place where life happens.', ZEN], ['Take off all your masks and see who’s looking back at you.', ZEN],
+    ['There are some things you can only understand when you stop searching.', ZEN]];
+  let csendN = 0;
+  const bolcs = $('bolcs');
+  mn.onEmpty = () => {
+    if (eff('mondat') === 'ki' || csendN++ % 2) return 0;
+    let sor = []; try { sor = JSON.parse(store.get('mandala-mondatok') || '[]'); } catch (e) {}   // keverve, ismétlés nélkül, amíg mind sorra nem kerül
+    if (!sor.length) sor = MONDAT.map((_, i) => i).sort(() => Math.random() - 0.5);
+    const [m, k] = MONDAT[sor.shift()] || MONDAT[0]; store.set('mandala-mondatok', JSON.stringify(sor));
+    bolcs.querySelector('p').textContent = m; bolcs.querySelector('small').textContent = k;
+    setTimeout(() => bolcs.classList.add('on'), 600); setTimeout(() => bolcs.classList.remove('on'), 7400);
+    return 7.5;   // a csend ennyivel hosszabb: a mondat eltűnik, mielőtt a mandala újjászületne
+  };
   setInterval(() => { if (started && !document.hidden) ajanl(); }, 5 * 60 * 1000);
   window.__mandalaCsend = () => { if (started && on) { on = false; mn.setWant(false); } };
   let bc = null; try { bc = new BroadcastChannel('banky-hang'); bc.onmessage = () => { if (started && on) { on = false; mn.setWant(false); } }; } catch (e) {}

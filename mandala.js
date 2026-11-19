@@ -140,8 +140,8 @@
           if (P['körCsakEgyszer'] === true && b.deaths >= 1) { this.snapshot(); this.choose(P, pats); }   // ingyenes: a spirálos halál csak egyszer, utána áttűnés
           else { b.ph = 'die'; b.t = 0; b.deaths++; this.grains = []; }
         }
-      } else if (b.ph === 'die' && b.t >= D) { b.ph = 'empty'; b.t = 0; this.korBowl(P); }
-      else if (b.ph === 'empty' && b.t >= E) { b.bgFrom = this.cur ? PAIRS[this.cur.pair][1] : null; this.choose(P, pats); this.t += 20 + Math.random() * 60; b.ph = 'born'; b.t = 0; }
+      } else if (b.ph === 'die' && b.t >= D) { b.ph = 'empty'; b.t = 0; this.korBowl(P); b.ext = 0; if (this.onEmpty) try { b.ext = Math.max(0, +this.onEmpty() || 0); } catch (e) {} }   // onEmpty: a csendben megjelenő mondat; ennyi mp-cel hosszabb a szünet
+      else if (b.ph === 'empty' && b.t >= E + (b.ext || 0)) { b.bgFrom = this.cur ? PAIRS[this.cur.pair][1] : null; this.choose(P, pats); this.t += 20 + Math.random() * 60; b.ph = 'born'; b.t = 0; }
       else if (b.ph === 'born' && b.t >= B) { b.ph = 'breathe'; b.t = 0; b.n = 0; if (this.onReborn && b.deaths) try { this.onReborn(); } catch (e) {} }
     }
     korLeg(P) {   // a légzés négy szakasza (mp): belégzés, benntartás, kilégzés, kinntartás
