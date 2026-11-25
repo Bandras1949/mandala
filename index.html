@@ -110,11 +110,11 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 #ny button{background:transparent;border:1px solid rgba(212,175,55,.4);color:var(--gold);border-radius:8px;padding:6px 12px;font:600 13px Cinzel,Georgia,serif;cursor:pointer;opacity:.8}
 #ny button.on{background:var(--gold);color:var(--ink);opacity:1}
 </style>
-<script>/* ÖNFRISSÍTÉS: induláskor és visszatéréskor megnézi a version.json-t; ha a GitHubon újabb változat van, egyszer újratölt */(function(){var V='2026-11-25-4';function c(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===V)return;var k='frissit-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString())}).catch(function(){})}catch(e){}}c();document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')c()})})();</script>
+<script>/* ÖNFRISSÍTÉS: induláskor és visszatéréskor megnézi a version.json-t; ha a GitHubon újabb változat van, egyszer újratölt */(function(){var V='2026-11-25-5';function c(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===V)return;var k='frissit-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString())}).catch(function(){})}catch(e){}}c();document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')c()})})();</script>
 </head>
 <body>
 <canvas id="cv"></canvas>
-<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="#" data-t="cimAj">Teljes változat →</a><div id="nev" data-t="nev">© Bánky András</div><div id="verzio">v2026-11-25-4</div></div>
+<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="#" data-t="cimAj">Teljes változat →</a><div id="nev" data-t="nev">© Bánky András</div><div id="verzio">v2026-11-25-5</div></div>
 <div id="legzes"><b></b><i></i></div>
 <div id="bolcs"><p></p><small></small></div>
 <a id="ajanl" href="#" data-t="ajanl">Tetszik? A teljes változatban a mandala újra és újra feloldódik és újjászületik →</a>
@@ -122,7 +122,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 <div id="foto" class="kgomb" title="Kép megállítása" data-ti="tFoto">📷</div>
 <div id="gomb" class="kgomb" title="Beállítások" data-ti="tGomb">⚙</div>
 <div id="kimerev"><div class="gombok"><button id="ment" class="fo" data-t="ment">Mentés · küldés</button><button id="tovabb" data-t="tovabb">Folytatás</button></div><p data-t="hatter">Háttérképnek: mentés után a Fotók appban → Megosztás → Használat háttérképként</p></div>
-<div id="kosz"><b></b><div class="kt"></div><div class="ki" style="display:none"><small data-t="ikon"></small><ol id="ikonL"></ol><button type="button" class="km" data-t="masol"></button></div><button type="button" class="kr" data-t="rendben"></button></div>
+<div id="kosz"><b></b><div class="kt"></div><div class="ki" style="display:none"><details><summary data-t="ikonQ" style="cursor:pointer;color:var(--gold);font-size:15px;margin-top:10px;list-style:none"></summary><small data-t="ikon"></small><ol id="ikonL"></ol><button type="button" class="km" data-t="masol"></button></details></div><button type="button" class="kr" data-t="rendben"></button></div>
 <div id="panel">
   <h2>MANDALA</h2>
   <div id="zar" class="zar">
@@ -178,7 +178,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
       akteszk: ' · aktív eszközök: ', csomag: ' · Kaleidoszkóp + Mandala csomag', masol: 'Kulcs másolása', masolva: 'Kimásolva ✓', lev: 'Kulcs leválasztása erről a telefonról', levBiztos: 'Biztosan? Koppints újra',
       levMeg: 'Új telefonra: itt válaszd le, az újon másold be a kulcsot.', kereszt: 'Kaleidoszkóp is? – 5 $ →',
       folyamat: 'Feloldás folyamatban…', koszi: 'Köszönjük a vásárlást!', feloldva: 'Feloldva ezen a telefonon.', email: 'A kulcsot e-mailben is elküldtük. Ha nem látod, nézd meg a spam mappát.', rendben: 'Rendben',
-      ikon: 'Az ikonról indított app külön tárolja a feloldást. Ha onnan is használnád:', ikonL: ['Koppints a „Kulcs másolása” gombra.', 'Nyisd meg az appot az ikonról.', 'Koppints a ⚙ gombra → „Már van kulcsod?” → illeszd be a kulcsot → „Aktiválás”.'], leveve: 'A kulcsot leválasztottad erről a telefonról. Most egy másik eszközön aktiválhatod.',
+      ikonQ: 'Az ikonról is használod az appot? ▸', ikon: 'Az ikonról indított app külön tárolja a feloldást, ezért ott egyszer be kell illeszteni a kulcsot:', ikonL: ['Koppints a „Kulcs másolása” gombra.', 'Nyisd meg az appot az ikonról.', 'Koppints a ⚙ gombra → „Már van kulcsod?” → illeszd be a kulcsot → „Aktiválás”.'], leveve: 'A kulcsot leválasztottad erről a telefonról. Most egy másik eszközön aktiválhatod.',
       lezarva: 'A kulcs ezen a telefonon már nem aktív, ezért visszaállt a próbaváltozat.',
       U: { limit_elerve: 'Ez a kulcs már 3 eszközön aktív. Egy régi eszközön előbb válaszd le, vagy írj nekünk: info@brillidea.hu', ismeretlen_kulcs: 'Ilyen kulcs nincs. Másold be pontosan az e-mailből.',
         hibas_kulcs_formatum: 'A kulcs 25 karakterből áll (5 × 5). Nézd meg, hiányzik-e belőle valami.', masik_termek: 'Ez a kulcs nem a Mandalához tartozik.', visszavont_vagy_lejart: 'Ezt a kulcsot visszavonták.',
@@ -200,7 +200,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
       akteszk: ' · active devices: ', csomag: ' · Kaleidoscope + Mandala bundle', masol: 'Copy key', masolva: 'Copied ✓', lev: 'Release the key from this device', levBiztos: 'Sure? Tap again',
       levMeg: 'New phone? Release it here, then paste the key on the new one.', kereszt: 'Kaleidoscope too? – $5 →',
       folyamat: 'Unlocking…', koszi: 'Thank you for your purchase!', feloldva: 'Unlocked on this device.', email: 'We have also e-mailed you the key. If you can’t see it, check your spam folder.', rendben: 'OK',
-      ikon: 'The app opened from its home-screen icon keeps its own unlock. To use it there too:', ikonL: ['Tap “Copy key”.', 'Open the app from its icon.', 'Tap ⚙ → “Already have a key?” → paste the key → “Activate”.'], leveve: 'The key has been released from this device. You can now activate it on another one.',
+      ikonQ: 'Do you also use the app from its icon? ▸', ikon: 'The app opened from its home-screen icon keeps its own unlock, so paste the key there once:', ikonL: ['Tap “Copy key”.', 'Open the app from its icon.', 'Tap ⚙ → “Already have a key?” → paste the key → “Activate”.'], leveve: 'The key has been released from this device. You can now activate it on another one.',
       lezarva: 'The key is no longer active on this device, so the trial version is back.',
       U: { limit_elerve: 'This key is already active on 3 devices. Release it on an old one first, or write to us: info@brillidea.hu', ismeretlen_kulcs: 'No such key. Paste it exactly from the e-mail.',
         hibas_kulcs_formatum: 'The key has 25 characters (5 × 5). Check whether something is missing.', masik_termek: 'This key does not belong to Mandala.', visszavont_vagy_lejart: 'This key has been revoked.',
