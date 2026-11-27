@@ -113,11 +113,11 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 #ny button{background:transparent;border:1px solid rgba(212,175,55,.4);color:var(--gold);border-radius:8px;padding:6px 12px;font:600 13px Cinzel,Georgia,serif;cursor:pointer;opacity:.8}
 #ny button.on{background:var(--gold);color:var(--ink);opacity:1}
 </style>
-<script>/* ÖNFRISSÍTÉS: induláskor és visszatéréskor megnézi a version.json-t; ha a GitHubon újabb változat van, egyszer újratölt */(function(){var V='2026-11-27';function c(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===V)return;var k='frissit-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString())}).catch(function(){})}catch(e){}}c();document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')c()})})();</script>
+<script>/* ÖNFRISSÍTÉS: induláskor és visszatéréskor megnézi a version.json-t; ha a GitHubon újabb változat van, egyszer újratölt */(function(){var V='2026-11-27-3';function c(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===V)return;var k='frissit-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString())}).catch(function(){})}catch(e){}}c();document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')c()})})();</script>
 </head>
 <body>
 <canvas id="cv"></canvas>
-<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="#" data-t="cimAj">Teljes változat →</a><div id="nev"><span data-t="nev">© Bánky András</span><div class="jogi"><a href="https://kaleidoszkop.brillidea.hu/arak.html" target="_blank" rel="noopener" data-t="jArak">Árak</a> · <a href="https://kaleidoszkop.brillidea.hu/feltetelek.html" target="_blank" rel="noopener" data-t="jFelt">Feltételek</a> · <a href="https://kaleidoszkop.brillidea.hu/adatvedelem.html" target="_blank" rel="noopener" data-t="jAdat">Adatvédelem</a> · <a href="mailto:info@brillidea.hu">info@brillidea.hu</a></div></div><div id="verzio">v2026-11-27</div></div>
+<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="#" data-t="cimAj">Teljes változat →</a><div id="nev"><span data-t="nev">© Bánky András</span><div class="jogi"><a href="https://kaleidoszkop.brillidea.hu/arak.html" target="_blank" rel="noopener" data-t="jArak">Árak</a> · <a href="https://kaleidoszkop.brillidea.hu/feltetelek.html" target="_blank" rel="noopener" data-t="jFelt">Feltételek</a> · <a href="https://kaleidoszkop.brillidea.hu/adatvedelem.html" target="_blank" rel="noopener" data-t="jAdat">Adatvédelem</a> · <a href="mailto:info@brillidea.hu">info@brillidea.hu</a></div></div><div id="verzio">v2026-11-27-3</div></div>
 <div id="legzes"><b></b><i></i></div>
 <div id="bolcs"><p></p><small></small></div>
 <a id="ajanl" href="#" data-t="ajanl">Tetszik? A teljes változatban a mandala újra és újra feloldódik és újjászületik →</a>
@@ -395,7 +395,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   const vzKesz = () => { const ac = mn.ac; return ac && ac.state === 'running' && mn.vg && on ? ac : null; };
   const csengo = () => {   // mély, lágy, halk csengő – két felhang, lassú lecsengés
     const ac = vzKesz(); if (!ac) return; try {
-      const t0 = ac.currentTime + 0.02, out = ac.createGain(); out.gain.value = 0.09; out.connect(mn.vg);
+      const t0 = ac.currentTime + 0.02, out = ac.createGain(); out.gain.value = 0.16; out.connect(mn.vg);   // 2026-11-27: erősebb (0,09 → 0,16, kb. +5 dB), egyes zenéknél elsikkadt
       [[523.25, 1, 2.6], [1046.5, 0.18, 1.4], [1569.8, 0.05, 0.8]].forEach(([f, a, d]) => { const o = ac.createOscillator(), g = ac.createGain(); o.type = 'sine'; o.frequency.value = f;
         g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(a, t0 + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, t0 + d); o.connect(g); g.connect(out); o.start(t0); o.stop(t0 + d + 0.05); });
     } catch (e) {} };
@@ -451,22 +451,35 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   const ajanl = () => { if (premium || frozen) return; aj.classList.add('on'); clearTimeout(aj.t); aj.t = setTimeout(() => aj.classList.remove('on'), 10000); };
   mn.onReborn = ajanl;
   // BÖLCS MONDATOK: a feloldódás utáni csendben (minden második alkalommal, az elsővel kezdve) egy mondat tűnik elő Bánky András
-  // TANULSÁGOK-sorozatából, aztán elhalványul, és csak utána születik újjá a mandala. A mondatok angolul vannak, mint a könyvek.
-  const TAO = 'THE WISDOM OF THE TAO', ZEN = 'THE WISDOM OF ZEN';
-  const MONDAT = [['All things return to their roots.', TAO], ['Nothing is softer than water, yet it wears away stone.', TAO], ['Whoever knows what is enough is rich.', TAO],
-    ['Things ripen in their own time.', TAO], ['Calmness is the master of restlessness.', TAO], ['Know when to stop.', TAO], ['Dampen your light; merge with the world.', TAO],
-    ['Reality is a matter of perspective.', TAO], ['Nothing is yours.', ZEN], ['Empty the cup, so it can be filled.', ZEN], ['Don’t fight the current. Recognize that you are the wave.', ZEN],
-    ['The light enters through the crack.', ZEN], ['What moves outside is what stirs within.', ZEN], ['Bring me your mind, and I will put it at ease.', ZEN],
-    ['When I eat, I eat. When I sleep, I sleep.', ZEN], ['The present is the only place where life happens.', ZEN], ['Take off all your masks and see who’s looking back at you.', ZEN],
-    ['There are some things you can only understand when you stop searching.', ZEN]];
+  // TANULSÁGOK-sorozatából, aztán elhalványul, és csak utána születik újjá a mandala. A mondatok a választott nyelven jelennek meg (2026-11-27: magyarul is).
+  const TAO = { en: 'THE WISDOM OF THE TAO', hu: 'A TAO BÖLCSESSÉGE' }, ZEN = { en: 'THE WISDOM OF ZEN', hu: 'A ZEN BÖLCSESSÉGE' };
+  const MONDAT = [
+    ['All things return to their roots.', 'Minden visszatér a gyökeréhez.', TAO],
+    ['Nothing is softer than water, yet it wears away stone.', 'Nincs lágyabb a víznél, mégis kivájja a követ.', TAO],
+    ['Whoever knows what is enough is rich.', 'Gazdag, aki tudja, mennyi az elég.', TAO],
+    ['Things ripen in their own time.', 'Minden a maga idejében érik be.', TAO],
+    ['Calmness is the master of restlessness.', 'A nyugalom a nyugtalanság ura.', TAO],
+    ['Know when to stop.', 'Tudd, mikor kell megállni.', TAO],
+    ['Dampen your light; merge with the world.', 'Tompítsd a fényed, olvadj eggyé a világgal.', TAO],
+    ['Reality is a matter of perspective.', 'A valóság nézőpont kérdése.', TAO],
+    ['Nothing is yours.', 'Semmi sem a tiéd.', ZEN],
+    ['Empty the cup, so it can be filled.', 'Ürítsd ki a csészét, hogy megtelhessen.', ZEN],
+    ['Don’t fight the current. Recognize that you are the wave.', 'Ne küzdj az árral. Ismerd fel, hogy te vagy a hullám.', ZEN],
+    ['The light enters through the crack.', 'A fény a repedésen át jut be.', ZEN],
+    ['What moves outside is what stirs within.', 'Ami kint mozdul, az benned rezdül.', ZEN],
+    ['Bring me your mind, and I will put it at ease.', 'Hozd ide az elméd, és megnyugtatom.', ZEN],
+    ['When I eat, I eat. When I sleep, I sleep.', 'Ha eszem, eszem. Ha alszom, alszom.', ZEN],
+    ['The present is the only place where life happens.', 'A jelen az egyetlen hely, ahol az élet megtörténik.', ZEN],
+    ['Take off all your masks and see who’s looking back at you.', 'Vedd le minden álarcod, és nézd meg, ki néz vissza rád.', ZEN],
+    ['There are some things you can only understand when you stop searching.', 'Vannak dolgok, amiket csak akkor értesz meg, ha abbahagyod a keresést.', ZEN]];
   let csendN = 0;
   const bolcs = $('bolcs');
   mn.onEmpty = () => {
     if (eff('mondat') === 'ki' || csendN++ % 2) return 0;
     let sor = []; try { sor = JSON.parse(store.get('mandala-mondatok') || '[]'); } catch (e) {}   // keverve, ismétlés nélkül, amíg mind sorra nem kerül
     if (!sor.length) sor = MONDAT.map((_, i) => i).sort(() => Math.random() - 0.5);
-    const [m, k] = MONDAT[sor.shift()] || MONDAT[0]; store.set('mandala-mondatok', JSON.stringify(sor));
-    bolcs.querySelector('p').textContent = m; bolcs.querySelector('small').textContent = k;
+    const [me, mh, k] = MONDAT[sor.shift()] || MONDAT[0], m = lang === 'hu' ? mh : me; store.set('mandala-mondatok', JSON.stringify(sor));
+    bolcs.querySelector('p').textContent = m; bolcs.querySelector('small').textContent = k[lang === 'hu' ? 'hu' : 'en'];
     setTimeout(() => bolcs.classList.add('on'), 600); setTimeout(() => bolcs.classList.remove('on'), 7400);
     return 7.5;   // a csend ennyivel hosszabb: a mondat eltűnik, mielőtt a mandala újjászületne
   };
