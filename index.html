@@ -113,11 +113,21 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
 #ny button{background:transparent;border:1px solid rgba(212,175,55,.4);color:var(--gold);border-radius:8px;padding:6px 12px;font:600 13px Cinzel,Georgia,serif;cursor:pointer;opacity:.8}
 #ny button.on{background:var(--gold);color:var(--ink);opacity:1}
 </style>
-<script>/* ÖNFRISSÍTÉS: induláskor és visszatéréskor megnézi a version.json-t; ha a GitHubon újabb változat van, egyszer újratölt */(function(){var V='2026-11-27-3';function c(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===V)return;var k='frissit-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString())}).catch(function(){})}catch(e){}}c();document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')c()})})();</script>
+<script>/* HIBANAPLÓ (belső, a vevő nem látja): minden hiba a telefon tárolójába kerül (utolsó 30); megnézni: mandala.brillidea.hu/?naplo */
+(function(){var K='mandala-naplo';
+window.__naplo=function(hol,e){try{var L=JSON.parse(localStorage.getItem(K)||'[]');L.push([new Date().toISOString().slice(0,19).replace('T',' '),(document.getElementById('verzio')||{}).textContent||'',hol,String(e&&(e.stack||e.message)||e).slice(0,400)]);localStorage.setItem(K,JSON.stringify(L.slice(-30)));}catch(x){}};
+window.addEventListener('error',function(ev){window.__naplo('hiba',ev.error||(ev.message+' @'+ev.lineno+':'+ev.colno));});
+window.addEventListener('unhandledrejection',function(ev){window.__naplo('promise',ev.reason);});
+if(/[?&]naplo/.test(location.search))addEventListener('DOMContentLoaded',function(){var L=[];try{L=JSON.parse(localStorage.getItem(K)||'[]');}catch(x){}
+var d=document.createElement('div');d.style.cssText='position:fixed;inset:0;z-index:99;background:#111;color:#ddd;font:12px/1.4 monospace;padding:14px;overflow:auto;white-space:pre-wrap';
+d.textContent='HIBANAPLÓ ('+L.length+' bejegyzés)\n\n'+(L.length?L.map(function(x){return x.join(' | ');}).join('\n\n'):'Nincs hiba.');
+var b=document.createElement('button');b.textContent='Törlés';b.style.cssText='display:block;margin-top:14px;padding:8px 14px';b.onclick=function(){localStorage.removeItem(K);location.replace(location.pathname);};
+d.appendChild(b);document.body.appendChild(d);});})();</script>
+<script>/* ÖNFRISSÍTÉS: induláskor és visszatéréskor megnézi a version.json-t; ha a GitHubon újabb változat van, egyszer újratölt */(function(){var V='2026-11-27-5';function c(){try{fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(!j||!j.v||j.v===V)return;var k='frissit-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1')}catch(e){}var u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString())}).catch(function(){})}catch(e){}}c();document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')c()})})();</script>
 </head>
 <body>
 <canvas id="cv"></canvas>
-<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="#" data-t="cimAj">Teljes változat →</a><div id="nev"><span data-t="nev">© Bánky András</span><div class="jogi"><a href="https://kaleidoszkop.brillidea.hu/arak.html" target="_blank" rel="noopener" data-t="jArak">Árak</a> · <a href="https://kaleidoszkop.brillidea.hu/feltetelek.html" target="_blank" rel="noopener" data-t="jFelt">Feltételek</a> · <a href="https://kaleidoszkop.brillidea.hu/adatvedelem.html" target="_blank" rel="noopener" data-t="jAdat">Adatvédelem</a> · <a href="mailto:info@brillidea.hu">info@brillidea.hu</a></div></div><div id="verzio">v2026-11-27-3</div></div>
+<div id="cim"><div id="ny"><button data-l="hu">HU</button><button data-l="en">EN</button></div><img id="logo" src="logo-mandala.png" alt="BRILLIDEA · MANDALA"><h1>MANDALA</h1><div id="al" data-t="al">Lélegezz együtt velem. Két perc, és lelassulsz.</div><div id="ind" data-t="ind">Koppints az indításhoz</div><div id="fekvo" data-t="fekvo">Fekve is szép – ha nem fordul el, kapcsold ki a képernyő‑elforgatás zárolását.</div><a id="cimAj" class="ajlink" href="#" data-t="cimAj">Teljes változat →</a><div id="nev"><span data-t="nev">© Bánky András</span><div class="jogi"><a href="https://kaleidoszkop.brillidea.hu/arak.html" target="_blank" rel="noopener" data-t="jArak">Árak</a> · <a href="https://kaleidoszkop.brillidea.hu/feltetelek.html" target="_blank" rel="noopener" data-t="jFelt">Feltételek</a> · <a href="https://kaleidoszkop.brillidea.hu/adatvedelem.html" target="_blank" rel="noopener" data-t="jAdat">Adatvédelem</a> · <a href="mailto:info@brillidea.hu">info@brillidea.hu</a></div></div><div id="verzio">v2026-11-27-5</div></div>
 <div id="legzes"><b></b><i></i></div>
 <div id="bolcs"><p></p><small></small></div>
 <a id="ajanl" href="#" data-t="ajanl">Tetszik? A teljes változatban a mandala újra és újra feloldódik és újjászületik →</a>
@@ -281,7 +291,8 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   const upd = () => { cur = P(); pats = PATS[eff('minták')] || PATS.mind; };
   const mn = new window.Mandala($('cv'), () => ({ want: started, paused: frozen, P: cur, pats }));
 
-  function draw() {   // a panel sorai
+  function draw() { try { draw0(); } catch (e) { window.__naplo && window.__naplo('draw', e); } }
+  function draw0() {   // a panel sorai
     $('zar').style.display = premium ? 'none' : 'block'; $('kinn').style.display = premium ? 'block' : 'none'; $('cimAj').style.display = premium ? 'none' : '';
     if (premium && LIC) {   // teljes változat: kulcs, eszközszám, keresztajánlat
       const cs = LIC.termek && LIC.termek === TERMEK.cs;
@@ -340,6 +351,7 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   if (premium && navigator.onLine !== false && Date.now() - (+LIC.ell || 0) > 7 * 864e5) setTimeout(() => hiv('ellenoriz', { kulcs: LIC.kulcs, peldany: LIC.peldany }).then(kezelEll), 4000);   // heti csendes ellenőrzés
   const hibaUtan = msg => { panel.classList.add('on'); $('van').open = true; $('atvHiba').style.display = ''; if (msg) $('hiba').textContent = msg; };
   // visszatérés a Creem pénztárából: automatikus átvétel
+  try {   // visszatérés, átadott kulcs, köszönőkártya – ha itt hiba van, az app többi része akkor is működik
   const qs = new URLSearchParams(location.search);
   if (!premium && qs.get('checkout_id') && qs.get('signature')) {
     koszMutat(t('koszi'), t('folyamat'), '', false);
@@ -361,7 +373,9 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   else if (uz === 'kezi' || uz === 'atvett') koszMutat(t('teljes') + ' ✓', t('feloldva'), '', true, uz === 'atvett');
   else if (uz === 'leveve') koszMutat(t('kulcs'), t('leveve'));
   else if (uz === 'lezarva') koszMutat(t('kulcs'), t('lezarva'));
-  function texts() {
+  } catch (e) { window.__naplo && window.__naplo('indulas', e); }
+  function texts() { try { texts0(); } catch (e) { window.__naplo && window.__naplo('texts', e); } }
+  function texts0() {
     document.documentElement.lang = lang; document.title = t('cim');
     document.querySelectorAll('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
     document.querySelectorAll('[data-ti]').forEach(el => { el.title = t(el.dataset.ti); });
@@ -371,15 +385,16 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   }
   $('ny').querySelectorAll('button').forEach(b => b.addEventListener('pointerup', e => { e.stopPropagation(); lang = b.dataset.l; store.set('appok-nyelv', lang); texts(); }));
   texts();
-  upd(); draw();
+  try { upd(); } catch (e) { window.__naplo && window.__naplo('upd', e); } draw();
 
   // ---------- légzésfeliratok: BELÉGZÉS · TARTSD BENT · KILÉGZÉS · TARTSD KINT ----------
   const lgB = document.querySelector('#legzes b'), lgI = document.querySelector('#legzes i');
   let lgLast = '';
-  (function lg() {
+  (function lg() { try {
     const l = started && !frozen && eff('felirat') === 'be' ? mn.korLbl || '' : '';
     if (l !== lgLast) { lgLast = l; if (l) { lgB.style.opacity = '0'; setTimeout(() => { if (lgLast === l) { lgB.textContent = t('LG')[l]; lgB.style.opacity = '1'; } }, lgB.textContent ? 250 : 0); } else lgB.style.opacity = '0'; }
     lgI.textContent = l && eff('szamlalo') === 'be' && mn.korMarad > 0 ? Math.ceil(mn.korMarad) : '';   // az előre jelzett felirat alatt még nincs szám
+    } catch (e) { if (!lg.h) { lg.h = 1; window.__naplo && window.__naplo('feliratok', e); } }
     requestAnimationFrame(lg);
   })();
 
@@ -401,11 +416,12 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
     } catch (e) {} };
   const mond = k => { const ac = vzKesz(), b = VZ.buf[lang + k]; if (!ac || !b) return; try {
       const s = ac.createBufferSource(), g = ac.createGain(); s.buffer = b; g.gain.value = 1.0; s.connect(g); g.connect(mn.vg); s.start(ac.currentTime + 0.02); } catch (e) {} };
-  (function vz() {
+  (function vz() { try {
     if (mn.ac && eff('hangv') === 'be') vzTolt();
     const l = started && !frozen ? mn.korLbl || '' : '';
     if (l !== VZ.last) { const elozo = VZ.last; VZ.last = l;
       if (l && eff('hangv') === 'be') { if (elozo) csengo(); setTimeout(() => { if (VZ.last === l) mond(l); }, elozo ? 450 : 0); } }
+    } catch (e) { if (!vz.h) { vz.h = 1; window.__naplo && window.__naplo('hangvezetes', e); } }
     setTimeout(vz, 100);
   })();
 
@@ -435,7 +451,8 @@ html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;-webkit-use
   let lock = null;
   const wake = async () => { try { if ('wakeLock' in navigator && !document.hidden) lock = await navigator.wakeLock.request('screen'); } catch (e) {} };
   let tapT = null;
-  const tap = e => {
+  const tap = e => { try { tap0(e); } catch (x) { window.__naplo && window.__naplo('koppintas', x); } };
+  const tap0 = e => {
     if (e.target.closest('#ny')) return;   // nyelvválasztó gomb
     if (e.target.closest('#panel') || e.target.closest('.kgomb') || e.target.closest('#kimerev') || e.target.closest('a')) return;   // linkre koppintás: csak a link nyílik meg
     if (!started) { started = true; mn.want = true; mn.start(); wake(); cim.style.opacity = '0'; setTimeout(() => cim.style.display = 'none', 2600); setTimeout(showGomb, 2600); return; }
